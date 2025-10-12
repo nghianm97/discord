@@ -1727,6 +1727,12 @@
           if (manhkiuc) {
             console.log("🎵 Playing music using testAudio logic...");
 
+            // Stop any existing playback first
+            if (!manhkiuc.paused) {
+              manhkiuc.pause();
+              manhkiuc.currentTime = 0;
+            }
+
             // Set video properties exactly like testAudio
             manhkiuc.muted = false;
             manhkiuc.volume = 1.0;
