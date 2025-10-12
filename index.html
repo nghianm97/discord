@@ -1165,6 +1165,8 @@
         let isMuted = false;
         let musicStarted = false;
         let audioSourceConnected = false;
+        let audioPlaying = false;
+        let globalAudioElement = null; // Store single audio instance
 
         // Initialize canvas
         function initCanvas() {
@@ -1630,50 +1632,50 @@
         // Test audio function
         window.testAudio = function () {
           console.log("🔊 Testing audio...");
-          if (manhkiuc) {
-            console.log("📹 Video element found:", manhkiuc);
-            console.log("📹 Video src:", manhkiuc.src);
-            console.log("📹 Video muted:", manhkiuc.muted);
-            console.log("📹 Video volume:", manhkiuc.volume);
-            console.log("📹 Video paused:", manhkiuc.paused);
-            console.log("📹 Video readyState:", manhkiuc.readyState);
+          // if (manhkiuc) {
+          //   console.log("📹 Video element found:", manhkiuc);
+          //   console.log("📹 Video src:", manhkiuc.src);
+          //   console.log("📹 Video muted:", manhkiuc.muted);
+          //   console.log("📹 Video volume:", manhkiuc.volume);
+          //   console.log("📹 Video paused:", manhkiuc.paused);
+          //   console.log("📹 Video readyState:", manhkiuc.readyState);
 
-            // Try to play
-            manhkiuc.muted = false;
-            manhkiuc.volume = 1.0;
-            manhkiuc
-              .play()
-              .then(() => {
-                console.log("✅ Test audio: Video playing successfully!");
-                console.log("📹 After play - muted:", manhkiuc.muted);
-                console.log("📹 After play - volume:", manhkiuc.volume);
+          //   // Try to play
+          //   manhkiuc.muted = false;
+          //   manhkiuc.volume = 1.0;
+          //   manhkiuc
+          //     .play()
+          //     .then(() => {
+          //       console.log("✅ Test audio: Video playing successfully!");
+          //       console.log("📹 After play - muted:", manhkiuc.muted);
+          //       console.log("📹 After play - volume:", manhkiuc.volume);
 
-                // Video is playing successfully
-              })
-              .catch((error) => {
-                console.error("❌ Test audio failed:", error);
+          //       // Video is playing successfully
+          //     })
+          //     .catch((error) => {
+          //       console.error("❌ Test audio failed:", error);
 
-                // Try muted play
-                manhkiuc.muted = true;
-                manhkiuc
-                  .play()
-                  .then(() => {
-                    console.log("✅ Test audio: Muted video playing");
-                    setTimeout(() => {
-                      manhkiuc.muted = false;
-                      console.log("🔊 Attempting to unmute...");
-                    }, 1000);
-                  })
-                  .catch((mutedError) => {
-                    console.error(
-                      "❌ Test audio muted also failed:",
-                      mutedError
-                    );
-                  });
-              });
-          } else {
-            console.error("❌ Video element not found!");
-          }
+          //       // Try muted play
+          //       manhkiuc.muted = true;
+          //       manhkiuc
+          //         .play()
+          //         .then(() => {
+          //           console.log("✅ Test audio: Muted video playing");
+          //           setTimeout(() => {
+          //             manhkiuc.muted = false;
+          //             console.log("🔊 Attempting to unmute...");
+          //           }, 1000);
+          //         })
+          //         .catch((mutedError) => {
+          //           console.error(
+          //             "❌ Test audio muted also failed:",
+          //             mutedError
+          //           );
+          //         });
+          //     });
+          // } else {
+          //   console.error("❌ Video element not found!");
+          // }
         };
 
         // Test online audio function
@@ -1681,28 +1683,35 @@
           console.log("🌐 Testing online audio...");
 
           // Test with a simple online audio file
-          const audio = new Audio();
-          audio.src =
-            "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav";
-          audio.volume = 0.5;
-          audio.muted = false;
+          // const audio = new Audio();
+          // audio.src =
+          //   "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav";
+          // audio.volume = 0.5;
+          // audio.muted = false;
 
-          audio
-            .play()
-            .then(() => {
-              console.log("✅ Online audio playing successfully!");
-              console.log("🔊 This confirms your browser audio works");
-            })
-            .catch((error) => {
-              console.error("❌ Online audio failed:", error);
-              console.log("🔇 Your browser may have audio issues");
-            });
+          // audio
+          //   .play()
+          //   .then(() => {
+          //     console.log("✅ Online audio playing successfully!");
+          //     console.log("🔊 This confirms your browser audio works");
+          //   })
+          //   .catch((error) => {
+          //     console.error("❌ Online audio failed:", error);
+          //     console.log("🔇 Your browser may have audio issues");
+          //   });
         };
 
         // Enter site function
         window.enterSite = function () {
           console.log("🚀 Entering site...");
           console.log("📹 Video element:", manhkiuc);
+
+          // Prevent multiple calls
+          if (audioPlaying) {
+            console.log("⚠️ Audio already playing, skipping...");
+            return;
+          }
+          audioPlaying = true;
 
           // Hide enter overlay immediately
           if (enterOverlay) {
@@ -1716,6 +1725,7 @@
 
             // Stop any existing playback first
             if (!manhkiuc.paused) {
+              console.log("🛑 Stopping existing playback...");
               manhkiuc.pause();
               manhkiuc.currentTime = 0;
             }
@@ -1726,43 +1736,47 @@
             manhkiuc.loop = true;
             manhkiuc.playsInline = true;
 
-            // Play the video
-            manhkiuc
-              .play()
-              .then(() => {
-                console.log("✅ Video playing successfully!");
-                console.log("📹 After play - muted:", manhkiuc.muted);
-                console.log("📹 After play - volume:", manhkiuc.volume);
+            // Use separate audio element instead of video
+            console.log("🔄 Using separate audio element...");
+            try {
+              // Stop and remove existing audio if any
+              if (globalAudioElement) {
+                console.log("🛑 Stopping existing audio...");
+                globalAudioElement.pause();
+                globalAudioElement.currentTime = 0;
+                globalAudioElement = null;
+              }
 
-                // Set playing state
-                isPlaying = true;
-                isMuted = false;
-                musicStarted = true;
+              // Create single audio instance
+              globalAudioElement = new Audio();
+              globalAudioElement.src = "manhkiuc.webm";
+              globalAudioElement.volume = 1.0;
+              globalAudioElement.muted = false;
+              globalAudioElement.loop = true;
 
-                // Start audio analysis and wave animation
-                initAudioContext();
-                connectAudioSource();
-                startWaveAnimation();
+              globalAudioElement
+                .play()
+                .then(() => {
+                  console.log("✅ Audio element playing successfully!");
 
-                // Also test with separate audio element like in testAudio
-                console.log("🔄 Testing with separate audio element...");
-                const audio = new Audio();
-                audio.src = "manhkiuc.webm";
-                audio.volume = 1.0;
-                audio.muted = false;
-                audio
-                  .play()
-                  .then(() => {
-                    console.log("✅ Audio element also playing successfully!");
-                  })
-                  .catch((audioError) => {
-                    console.warn(
-                      "⚠️ Audio element failed but video is working:",
-                      audioError
-                    );
-                  });
-              })
-              .catch((error) => {});
+                  // Set playing state
+                  isPlaying = true;
+                  isMuted = false;
+                  musicStarted = true;
+
+                  // Start audio analysis and wave animation
+                  initAudioContext();
+                  connectAudioSource();
+                  startWaveAnimation();
+                })
+                .catch((audioError) => {
+                  console.warn("⚠️ Audio element failed:", audioError);
+                  globalAudioElement = null;
+                });
+            } catch (error) {
+              console.warn("⚠️ Could not create Audio element:", error);
+              globalAudioElement = null;
+            }
           } else {
             console.error("❌ Video element not found!");
           }
@@ -1994,26 +2008,7 @@
           overlay.setAttribute("aria-hidden", "true");
         }
 
-        // Extra: If autoplay was blocked but later user interacts, try to unmute gradually
-        document.addEventListener(
-          "click",
-          async () => {
-            if (!manhkiuc) return;
-            try {
-              if (manhkiuc.paused) {
-                await manhkiuc.play();
-              }
-              // Try unmute after a user gesture
-              if (manhkiuc.muted) {
-                manhkiuc.muted = false;
-                manhkiuc.volume = 0.5;
-              }
-            } catch (e) {
-              // ignore
-            }
-          },
-          { passive: true }
-        );
+        // Removed: document click listener that was causing duplicate audio playback
 
         // Make sure cursor image is set (original behavior)
         document.body.style.cursor =
@@ -2189,43 +2184,7 @@
         }
 
         // Auto-click anywhere on page immediately
-        function autoClickAnywhere() {
-          console.log("🎯 Auto-clicking anywhere on page immediately...");
-
-          // First create real user interaction
-          createRealUserInteraction();
-
-          // Then try synthetic events
-          const clickEvent = new MouseEvent("click", {
-            bubbles: true,
-            cancelable: true,
-            view: window,
-            clientX: Math.random() * window.innerWidth,
-            clientY: Math.random() * window.innerHeight,
-          });
-
-          document.dispatchEvent(clickEvent);
-          document.body.click();
-
-          // Try clicking on play button if it exists
-          const playBtn = document.querySelector(".play-btn");
-          if (playBtn) {
-            playBtn.click();
-            console.log("🎵 Play button clicked");
-          }
-
-          console.log("✅ Auto-click dispatched to random location");
-        }
-
-        // Start auto-click after page loads
-        window.addEventListener("load", autoClickAnywhere);
-
-        // Fallback: Auto-click on DOM ready
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", autoClickAnywhere);
-        } else {
-          autoClickAnywhere();
-        }
+        // Removed: autoClickAnywhere functions that were causing automatic audio playback
 
         // Web Audio API bypass method
         function tryWebAudioBypass() {
@@ -2279,21 +2238,7 @@
           return audio;
         }
 
-        // Multiple fallback methods - execute immediately
-        console.log("🔄 Method 1: Direct video play immediately");
-        playVideo();
-
-        console.log("🔄 Method 2: Audio backup creation immediately");
-        createAudioBackup();
-
-        console.log("🔄 Method 3: Web Audio bypass immediately");
-        tryWebAudioBypass();
-
-        console.log("🔄 Method 4: YouTube iframe backup immediately");
-        createYouTubeBackup();
-
-        console.log("🔄 Method 5: Final video attempt immediately");
-        playVideo();
+        // Removed: Multiple fallback methods that were causing automatic audio playback
 
         // Create YouTube iframe as ultimate backup
         function createYouTubeBackup() {
