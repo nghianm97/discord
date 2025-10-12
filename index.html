@@ -1762,44 +1762,7 @@
                     );
                   });
               })
-              .catch((error) => {
-                console.error("❌ Video play failed:", error);
-
-                // Try muted play as fallback
-                console.log("🔄 Trying muted play...");
-                manhkiuc.muted = true;
-                manhkiuc
-                  .play()
-                  .then(() => {
-                    console.log("✅ Muted video playing");
-                    isPlaying = true;
-                    isMuted = true;
-                    musicStarted = true;
-
-                    // Start wave animation
-                    initAudioContext();
-                    connectAudioSource();
-                    startWaveAnimation();
-
-                    // Try to unmute after 1 second
-                    setTimeout(() => {
-                      try {
-                        manhkiuc.muted = false;
-                        isMuted = false;
-                        console.log("🔊 Successfully unmuted!");
-                      } catch (e) {
-                        console.log("🔇 Could not unmute");
-                      }
-                    }, 1000);
-                  })
-                  .catch((mutedError) => {
-                    console.error("❌ Muted play also failed:", mutedError);
-                    console.error("💥 All audio methods failed!");
-
-                    // Still start wave animation for visual effect
-                    startWaveAnimation();
-                  });
-              });
+              .catch((error) => {});
           } else {
             console.error("❌ Video element not found!");
           }
