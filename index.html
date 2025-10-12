@@ -6,15 +6,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <title>@Huyền Chi | Profile</title>
-    <meta name="description" content="Trang cá nhân của Nguyễn Thị Huyền Chi" />
+    <title>Huyền Chi | Profile</title>
+    <meta name="description" content="Trang cá nhân của Huyền Chi" />
     <meta property="og:title" content="@Huyền Chi | Profile" />
     <meta
       property="og:description"
       content="Trang cá nhân của Nguyễn Thị Huyền Chi"
     />
     <meta property="theme-color" content="#ffffff" />
-
     <style>
       * {
         margin: 0;
@@ -27,8 +26,11 @@
           "Helvetica Neue", Arial, sans-serif;
         background: #000;
         color: #fff;
-        min-height: 100vh;
-        overflow-x: hidden;
+        height: 100vh; /* Fallback for older browsers */
+        height: 100dvh;
+        max-height: 100vh; /* Fallback for older browsers */
+        max-height: 100dvh;
+        overflow: hidden;
         position: relative;
         scroll-behavior: smooth;
         -webkit-tap-highlight-color: transparent;
@@ -50,12 +52,12 @@
         z-index: 0;
       }
 
-      /* Header Name */
+      /* Header Name - Running Text */
       .header-name {
         position: fixed;
         top: 25%;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 0;
+        width: 100%;
         font-size: 4rem;
         font-weight: 700;
         background: linear-gradient(
@@ -73,18 +75,18 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: gradientFlow 6s ease-in-out infinite,
-          floating 4s ease-in-out infinite, pulseGlow 3s ease-in-out infinite,
-          textShake 8s ease-in-out infinite;
+          runningText 8s linear infinite;
         z-index: 100;
         text-align: center;
         text-shadow: 0 0 40px rgba(255, 110, 196, 0.6);
         letter-spacing: 3px;
         filter: drop-shadow(0 0 20px rgba(120, 115, 245, 0.8));
         transition: all 0.3s ease;
+        white-space: nowrap;
       }
 
       .header-name:hover {
-        transform: translateX(-50%) scale(1.1);
+        animation-play-state: paused;
         text-shadow: 0 0 60px rgba(255, 255, 255, 0.9);
         filter: drop-shadow(0 0 30px rgba(255, 110, 196, 1));
       }
@@ -112,51 +114,80 @@
         }
       }
 
-      @keyframes floating {
-        0%,
+      /* Poem Animation */
+      .poem-line {
+        position: fixed;
+        font-size: clamp(8px, 1.2vw, 15px);
+        font-weight: 900;
+        font-style: italic;
+        background: linear-gradient(
+          45deg,
+          #ff6ec4,
+          #7873f5,
+          #4facfe,
+          #00f2fe,
+          #ff9a9e
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 60px rgba(255, 110, 196, 0.8);
+        letter-spacing: clamp(0.5px, 0.2vw, 1px);
+        opacity: 0;
+        transform: scale(0.3) rotate(-20deg);
+        transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        pointer-events: none;
+        z-index: 10001;
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+        text-align: center;
+        white-space: nowrap;
+        max-width: 90vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .poem-line.show {
+        opacity: 1;
+        transform: scale(1.3) rotate(var(--random-rotation, 8deg));
+        animation: poemGlow 2s ease-in-out infinite alternate,
+          poemFloat 3s ease-in-out infinite;
+      }
+
+      .poem-line.hide {
+        opacity: 0;
+        transform: scale(0.2) rotate(-25deg);
+      }
+
+      @keyframes poemGlow {
+        0% {
+          text-shadow: 0 0 60px rgba(255, 110, 196, 0.8),
+            0 0 80px rgba(120, 115, 245, 0.6), 0 0 100px rgba(79, 172, 254, 0.4);
+        }
         100% {
-          transform: translateX(-50%) translateY(0px) rotate(0deg);
-        }
-        25% {
-          transform: translateX(-50%) translateY(-15px) rotate(1deg);
-        }
-        50% {
-          transform: translateX(-50%) translateY(-25px) rotate(0deg);
-        }
-        75% {
-          transform: translateX(-50%) translateY(-15px) rotate(-1deg);
+          text-shadow: 0 0 80px rgba(255, 110, 196, 1),
+            0 0 100px rgba(120, 115, 245, 0.8),
+            0 0 120px rgba(79, 172, 254, 0.6);
         }
       }
 
-      @keyframes pulseGlow {
+      @keyframes poemFloat {
         0%,
         100% {
-          text-shadow: 0 0 20px rgba(255, 110, 196, 0.6),
-            0 0 40px rgba(120, 115, 245, 0.4), 0 0 60px rgba(79, 172, 254, 0.2);
+          transform: scale(1.3) rotate(var(--random-rotation, 8deg))
+            translateY(0px);
         }
         50% {
-          text-shadow: 0 0 30px rgba(255, 110, 196, 0.8),
-            0 0 60px rgba(120, 115, 245, 0.6), 0 0 90px rgba(79, 172, 254, 0.4);
+          transform: scale(1.4)
+            rotate(calc(var(--random-rotation, 8deg) + 4deg)) translateY(-10px);
         }
       }
 
-      @keyframes textShake {
-        0%,
-        90%,
+      @keyframes runningText {
+        0% {
+          transform: translateX(-100%);
+        }
         100% {
-          transform: translateX(-50%) translateY(0px) rotate(0deg);
-        }
-        5% {
-          transform: translateX(-50%) translateY(-2px) rotate(0.5deg);
-        }
-        10% {
-          transform: translateX(-50%) translateY(2px) rotate(-0.5deg);
-        }
-        15% {
-          transform: translateX(-50%) translateY(-1px) rotate(0.3deg);
-        }
-        20% {
-          transform: translateX(-50%) translateY(1px) rotate(-0.3deg);
+          transform: translateX(100%);
         }
       }
 
@@ -168,8 +199,12 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        height: 100vh; /* Fallback for older browsers */
+        height: 100dvh;
+        max-height: 100vh; /* Fallback for older browsers */
+        max-height: 100dvh;
         padding: 150px 20px 50px;
+        box-sizing: border-box;
       }
 
       /* Profile Card */
@@ -278,6 +313,8 @@
         font-size: 1.8rem;
         transition: all 0.3s ease;
         cursor: pointer;
+        animation: socialFloat 3s ease-in-out infinite,
+          socialPulse 2s ease-in-out infinite;
       }
 
       .social-icon:hover {
@@ -285,6 +322,67 @@
         border-color: rgba(255, 255, 255, 0.4);
         transform: translateY(-5px) scale(1.1);
         box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        animation-play-state: paused;
+      }
+
+      /* Social Icon Animations */
+      @keyframes socialFloat {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-8px) rotate(1deg);
+        }
+        50% {
+          transform: translateY(-12px) rotate(0deg);
+        }
+        75% {
+          transform: translateY(-8px) rotate(-1deg);
+        }
+      }
+
+      @keyframes socialPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.15);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+          background: rgba(255, 255, 255, 0.25);
+        }
+      }
+
+      /* Individual icon animations */
+      .social-icon:nth-child(1) {
+        animation-delay: 0s;
+        animation: socialFloat 3s ease-in-out infinite,
+          socialPulse 2s ease-in-out infinite,
+          socialGlow 4s ease-in-out infinite;
+      }
+
+      .social-icon:nth-child(2) {
+        animation-delay: 1.5s;
+        animation: socialFloat 3s ease-in-out infinite,
+          socialPulse 2s ease-in-out infinite,
+          socialGlow 4s ease-in-out infinite;
+      }
+
+      @keyframes socialGlow {
+        0%,
+        100% {
+          filter: brightness(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+        25% {
+          filter: brightness(1.2) drop-shadow(0 0 10px rgba(79, 172, 254, 0.5));
+        }
+        50% {
+          filter: brightness(1.4) drop-shadow(0 0 15px rgba(255, 110, 196, 0.6));
+        }
+        75% {
+          filter: brightness(1.2) drop-shadow(0 0 10px rgba(120, 115, 245, 0.5));
+        }
       }
 
       /* Shooting Stars */
@@ -360,38 +458,302 @@
         }
       }
 
-      /* YouTube Player */
-      .youtube-container {
+      /* Wave Visualizer */
+      .wave-container {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10000;
+        width: 300px;
+        height: 120px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+      }
+
+      .wave-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* Music Video Player - Visible */
+      .music-video-container {
         position: fixed;
         bottom: 20px;
         left: 20px;
-        z-index: 10000;
-        border-radius: 10px;
+        z-index: 1000;
         overflow: hidden;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      }
-
-      .youtube-container iframe {
         width: 280px;
         height: 158px;
+        opacity: 1;
+        pointer-events: auto;
+        backdrop-filter: blur(10px);
       }
 
-      /* Responsive Design */
+      .music-video-container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
 
-      /* Tablet */
+      /* Hover effects for video container */
+      .music-video-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        transition: all 0.3s ease;
+      }
+
+      .music-video-container:hover video {
+        filter: brightness(1.1);
+      }
+
+      /* Responsive design for video container */
+      @media (max-width: 768px) {
+        .music-video-container {
+          width: 200px;
+          height: 113px;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .music-video-container {
+          width: 150px;
+          height: 85px;
+          bottom: 15px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Enter Overlay */
+      .enter-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.8),
+          rgba(26, 26, 46, 0.8),
+          rgba(22, 33, 62, 0.8)
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: opacity 0.8s ease, visibility 0.8s ease,
+          backdrop-filter 0.8s ease;
+      }
+
+      .enter-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+      }
+
+      .enter-overlay h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin-bottom: 20px;
+        animation: gradientFlow 3s ease-in-out infinite;
+        text-shadow: 0 0 40px rgba(255, 110, 196, 0.6);
+        letter-spacing: 3px;
+      }
+
+      .enter-overlay p {
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        margin-bottom: 40px;
+        animation: fadeInOut 2s ease-in-out infinite;
+      }
+
+      .enter-overlay .subtitle {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        animation: fadeInOut 2s ease-in-out infinite;
+        animation-delay: 0.5s;
+      }
+
+      @keyframes fadeInOut {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* Video Control Buttons */
+      .video-control-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10001;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .video-control-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translate(-50%, -50%) scale(1.15);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      }
+
+      .video-control-btn:active {
+        transform: translate(-50%, -50%) scale(1.05);
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Click to Play Overlay */
+      .click-to-play-overlay {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10001;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        animation: pulseOverlay 2s ease-in-out infinite;
+        cursor: pointer;
+      }
+
+      .click-to-play-overlay h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff6ec4, #7873f5, #4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .click-to-play-overlay p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      @keyframes pulseOverlay {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.05);
+          box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      /* Play fallback overlay (visible when autoplay blocked) */
+      .play-overlay {
+        position: fixed;
+        bottom: 18px;
+        left: 18px;
+        z-index: 10001;
+        display: none; /* shown only if autoplay blocked */
+        gap: 8px;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 8px;
+        border-radius: 10px;
+      }
+      .play-overlay button {
+        background: linear-gradient(90deg, #ff6ec4, #7873f5);
+        border: none;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .play-overlay .label {
+        color: #fff;
+        font-size: 0.9rem;
+      }
+
+      /* Responsive rules omitted for brevity (kept same as original) */
       @media (max-width: 1024px) {
         .header-name {
           font-size: 3rem;
           top: 15%;
+          animation: gradientFlow 6s ease-in-out infinite,
+            runningText 10s linear infinite;
         }
 
-        .youtube-container iframe {
+        .poem-line {
+          font-size: clamp(8px, 1.1vw, 14px);
+        }
+
+        .wave-container {
+          width: 280px;
+          height: 110px;
+        }
+
+        .music-video-container {
           width: 260px;
           height: 146px;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .video-control-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 14px;
+        }
+
+        .enter-overlay h1 {
+          font-size: 3rem;
+        }
+
+        .enter-overlay p {
+          font-size: 1.2rem;
         }
       }
 
-      /* Mobile Large */
       @media (max-width: 768px) {
         .header-name {
           font-size: 3rem;
@@ -400,7 +762,7 @@
         }
 
         .container {
-          padding: 120px 15px 40px;
+          padding: 80px 15px 20px;
         }
 
         .profile-card {
@@ -432,29 +794,51 @@
           width: 50px;
           height: 50px;
           font-size: 1.5rem;
+          animation: socialFloat 3s ease-in-out infinite,
+            socialPulse 2s ease-in-out infinite;
         }
 
-        .youtube-container {
+        .wave-container {
+          width: 240px;
+          height: 90px;
+        }
+
+        .music-video-container {
           bottom: 15px;
-          left: 15px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 220px;
+          height: 124px;
         }
 
-        .youtube-container iframe {
-          width: 220px !important;
-          height: 124px !important;
+        .video-control-btn {
+          width: 35px;
+          height: 35px;
+          font-size: 12px;
+        }
+
+        .enter-overlay h1 {
+          font-size: 2.5rem;
+        }
+
+        .enter-overlay p {
+          font-size: 1rem;
         }
       }
 
-      /* Mobile Small */
       @media (max-width: 480px) {
         .header-name {
           font-size: 2.5rem;
-          top: 33%;
+          top: 30%;
           letter-spacing: 1px;
         }
 
+        .poem-line {
+          font-size: clamp(8px, 1vw, 12px);
+        }
+
         .container {
-          padding: 100px 10px 30px;
+          padding: 60px 10px 15px;
         }
 
         .profile-card {
@@ -482,28 +866,50 @@
           width: 45px;
           height: 45px;
           font-size: 1.3rem;
+          animation: socialFloat 3s ease-in-out infinite,
+            socialPulse 2s ease-in-out infinite;
         }
 
-        .youtube-container {
+        .wave-container {
+          width: 200px;
+          height: 80px;
+        }
+
+        .music-video-container {
           bottom: 10px;
-          left: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 180px;
+          height: 101px;
         }
 
-        .youtube-container iframe {
-          width: 180px !important;
-          height: 101px !important;
+        .video-control-btn {
+          width: 30px;
+          height: 30px;
+          font-size: 11px;
+        }
+
+        .enter-overlay h1 {
+          font-size: 2rem;
+        }
+
+        .enter-overlay p {
+          font-size: 0.9rem;
         }
       }
 
-      /* Mobile Extra Small */
       @media (max-width: 360px) {
         .header-name {
           font-size: 2rem;
           top: 2%;
         }
 
+        .poem-line {
+          font-size: clamp(8px, 0.9vw, 10px);
+        }
+
         .container {
-          padding: 80px 5px 20px;
+          padding: 50px 5px 10px;
         }
 
         .profile-card {
@@ -524,23 +930,50 @@
           width: 40px;
           height: 40px;
           font-size: 1.1rem;
+          animation: socialFloat 3s ease-in-out infinite,
+            socialPulse 2s ease-in-out infinite;
         }
 
-        .youtube-container iframe {
-          width: 160px !important;
-          height: 90px !important;
+        .wave-container {
+          width: 170px;
+          height: 70px;
+        }
+
+        .music-video-container {
+          width: 160px;
+          height: 90px;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .video-control-btn {
+          width: 28px;
+          height: 28px;
+          font-size: 10px;
+        }
+
+        .enter-overlay h1 {
+          font-size: 1.8rem;
+        }
+
+        .enter-overlay p {
+          font-size: 0.8rem;
         }
       }
 
-      /* Landscape Mobile */
       @media (max-height: 500px) and (orientation: landscape) {
         .header-name {
           font-size: 2.2rem;
           top: 2%;
         }
 
+        .poem-line {
+          font-size: clamp(8px, 1vw, 13px);
+        }
+
         .container {
-          padding: 60px 20px 10px;
+          padding: 40px 20px 5px;
         }
 
         .profile-card {
@@ -558,21 +991,47 @@
           margin-bottom: 15px;
         }
 
-        .youtube-container {
-          bottom: 5px;
-          left: 5px;
+        .wave-container {
+          width: 150px;
+          height: 60px;
         }
 
-        .youtube-container iframe {
-          width: 150px !important;
-          height: 84px !important;
+        .music-video-container {
+          bottom: 5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 150px;
+          height: 84px;
+        }
+
+        .video-control-btn {
+          width: 25px;
+          height: 25px;
+          font-size: 9px;
+        }
+
+        .enter-overlay h1 {
+          font-size: 1.5rem;
+        }
+
+        .enter-overlay p {
+          font-size: 0.7rem;
         }
       }
     </style>
   </head>
   <body>
     <!-- Background Video -->
-    <video class="background-video" autoplay loop muted playsinline>
+    <video
+      id="bgVideo"
+      class="background-video"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
       <source
         src="https://r2.guns.lol/c791a659-e879-4688-a889-9b01eaf784db.mp4"
         type="video/mp4"
@@ -580,7 +1039,12 @@
     </video>
 
     <!-- Header Name -->
-    <div class="header-name">Huyền Chi</div>
+    <div class="header-name">
+      <p class="poem-line" data-line="0">Một mảnh kí ức</p>
+      <p class="poem-line" data-line="1">Em chia ra làm 2 phần</p>
+      <p class="poem-line" data-line="2">Phần đầu là phần gặp gỡ</p>
+      <p class="poem-line" data-line="3">Phần còn lại khắc cốt ghi tâm...</p>
+    </div>
 
     <!-- Main Container -->
     <div class="container">
@@ -595,7 +1059,7 @@
         </div>
 
         <!-- Username -->
-        <!-- <h1 class="username">Huyền Chi</h1> -->
+        <h1 class="username">Huyền Chi</h1>
 
         <!-- Entry Text -->
         <p class="entry-text">✨ Xin chào, đây là trang cá nhân của tôi ✨</p>
@@ -642,59 +1106,1263 @@
       </div>
     </div>
 
-    <!-- YouTube Music Player -->
-    <div class="youtube-container">
-      <iframe
-        src="https://www.youtube.com/embed/MoYaUjvIxyE?si=cFaDu5fxMr5hISDF&autoplay=1&loop=1&playlist=MoYaUjvIxyE"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
+    <!-- Wave Visualizer -->
+    <div class="wave-container" aria-label="Audio wave visualizer">
+      <canvas id="waveCanvas" class="wave-canvas"></canvas>
+    </div>
+
+    <!-- Music Video Player -->
+    <div class="music-video-container" aria-label="Music video">
+      <video
+        id="manhkiuc"
+        loop
+        playsinline
+        preload="auto"
+        style="width: 100%; height: 100%; object-fit: cover"
       >
-      </iframe>
+        <source src="manhkiuc.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Enter Overlay -->
+    <div class="enter-overlay" id="enterOverlay" onclick="enterSite()">
+      <h1>Click to Enter</h1>
+      <p>Welcome to Huyền Chi's Profile</p>
+      <div class="subtitle">Nhấn để vào trang</div>
+    </div>
+
+    <!-- Play / Unmute overlay (fallback if autoplay blocked) -->
+    <div class="play-overlay" id="playOverlay" role="dialog" aria-hidden="true">
+      <div class="label">Bật âm thanh / phát</div>
+      <button id="playUnmuteBtn" aria-label="Play and unmute">
+        Play / Unmute
+      </button>
+      <button id="playMutedBtn" aria-label="Play muted">Play muted</button>
     </div>
 
     <script>
-      // Shooting Stars Animation - Unlimited
-      function createShootingStar() {
-        const star = document.createElement("div");
-        star.classList.add("shooting-star");
+      (function () {
+        // Elements
+        const bgVideo = document.getElementById("bgVideo");
+        const manhkiuc = document.getElementById("manhkiuc");
+        const overlay = document.getElementById("playOverlay");
+        const btnPlayUnmute = document.getElementById("playUnmuteBtn");
+        const btnPlayMuted = document.getElementById("playMutedBtn");
 
-        // Random starting position
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.top = Math.random() * 100 + "vh";
+        // Wave Visualizer Elements
+        const waveCanvas = document.getElementById("waveCanvas");
+        const waveCtx = waveCanvas.getContext("2d");
+        const enterOverlay = document.getElementById("enterOverlay");
 
-        // Random size (4-7px)
-        const size = 4 + Math.random() * 3;
-        star.style.width = size + "px";
-        star.style.height = size + "px";
+        // Audio Analysis
+        let audioContext = null;
+        let analyser = null;
+        let source = null;
+        let dataArray = null;
+        let animationId = null;
+        let isPlaying = false;
+        let isMuted = false;
+        let musicStarted = false;
+        let audioSourceConnected = false;
 
-        // Fixed animation duration (2 seconds - slower)
-        star.style.animationDuration = "2s";
+        // Initialize canvas
+        function initCanvas() {
+          const rect = waveCanvas.getBoundingClientRect();
+          waveCanvas.width = rect.width * window.devicePixelRatio;
+          waveCanvas.height = rect.height * window.devicePixelRatio;
+          waveCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+          waveCanvas.style.width = rect.width + "px";
+          waveCanvas.style.height = rect.height + "px";
+        }
 
-        // Random opacity
-        star.style.opacity = 0.7 + Math.random() * 0.3;
+        // Poem Animation
+        let currentPoemLine = 0;
+        let poemAnimationInterval = null;
 
-        document.body.appendChild(star);
+        function startPoemAnimation() {
+          console.log("📝 Starting poem animation...");
 
-        // Remove star after 2 seconds
-        setTimeout(() => {
-          star.remove();
-        }, 2000);
-      }
+          const poemLines = document.querySelectorAll(".poem-line");
+          if (poemLines.length === 0) return;
 
-      // Create initial shooting stars
-      for (let i = 0; i < 10; i++) {
-        setTimeout(() => createShootingStar(), i * 2000);
-      }
+          currentPoemLine = 0;
+          showPoemLine(currentPoemLine);
+        }
 
-      // Continuously create shooting stars every 2 seconds
-      setInterval(createShootingStar, 2000);
+        function showPoemLine(lineIndex) {
+          const poemLines = document.querySelectorAll(".poem-line");
+          if (lineIndex >= poemLines.length) {
+            // Animation finished, restart
+            setTimeout(() => {
+              startPoemAnimation();
+            }, 1000);
+            return;
+          }
 
-      // Cursor custom
-      document.body.style.cursor =
-        "url(https://r2.guns.lol/d65efee2-e2af-42e5-b2f4-63ecf4fb1afd.png) 16 16, auto";
+          const currentLine = poemLines[lineIndex];
+
+          // Calculate available space (90% of viewport to ensure text fits)
+          const availableWidth = window.innerWidth * 0.9;
+          const availableHeight = window.innerHeight * 0.9;
+
+          // Get text width to ensure it fits
+          const tempSpan = document.createElement("span");
+          tempSpan.style.fontSize =
+            currentLine.style.fontSize ||
+            getComputedStyle(currentLine).fontSize;
+          tempSpan.style.fontFamily = getComputedStyle(currentLine).fontFamily;
+          tempSpan.style.fontWeight = getComputedStyle(currentLine).fontWeight;
+          tempSpan.style.visibility = "hidden";
+          tempSpan.style.position = "absolute";
+          tempSpan.textContent = currentLine.textContent;
+          document.body.appendChild(tempSpan);
+
+          const textWidth = tempSpan.offsetWidth;
+          const textHeight = tempSpan.offsetHeight;
+          document.body.removeChild(tempSpan);
+
+          // Random position ensuring text fits within viewport
+          const maxX = Math.max(0, availableWidth - textWidth);
+          const maxY = Math.max(0, availableHeight - textHeight);
+
+          const randomX = Math.random() * maxX;
+          const randomY = Math.random() * maxY;
+
+          // Set position using percentage for better responsiveness
+          currentLine.style.left = (randomX / window.innerWidth) * 100 + "%";
+          currentLine.style.top = (randomY / window.innerHeight) * 100 + "%";
+
+          // Random rotation for variety (horizontal, vertical, diagonal)
+          const rotationAngles = [
+            0, 90, -90, 180, 45, -45, 135, -135, 30, -30, 60, -60,
+          ];
+          const randomRotation =
+            rotationAngles[Math.floor(Math.random() * rotationAngles.length)];
+
+          // Apply random rotation to the element
+          currentLine.style.setProperty(
+            "--random-rotation",
+            randomRotation + "deg"
+          );
+
+          // Show line
+          currentLine.classList.remove("hide");
+          currentLine.classList.add("show");
+
+          console.log(
+            `📝 Showing line ${lineIndex + 1}: "${
+              currentLine.textContent
+            }" at ${currentLine.style.left}, ${
+              currentLine.style.top
+            } rotated ${randomRotation}°`
+          );
+
+          // Hide after 2 seconds
+          setTimeout(() => {
+            currentLine.classList.remove("show");
+            currentLine.classList.add("hide");
+
+            // Show next line after hide animation
+            setTimeout(() => {
+              currentPoemLine++;
+              showPoemLine(currentPoemLine);
+            }, 1000);
+          }, 2000);
+        }
+
+        function stopPoemAnimation() {
+          const poemLines = document.querySelectorAll(".poem-line");
+          poemLines.forEach((line) => {
+            line.classList.remove("show");
+            line.classList.add("hide");
+          });
+          currentPoemLine = 0;
+        }
+
+        // Initialize Web Audio API
+        function initAudioContext() {
+          if (!audioContext) {
+            audioContext = new (window.AudioContext ||
+              window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.8;
+
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+
+            console.log("🎵 Audio context initialized");
+          }
+        }
+
+        // Connect video to audio analysis
+        function connectAudioSource() {
+          if (!audioContext || !manhkiuc) return;
+
+          // Only connect once
+          if (audioSourceConnected) {
+            console.log("🎵 Audio source already connected, skipping");
+            return;
+          }
+
+          try {
+            source = audioContext.createMediaElementSource(manhkiuc);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            audioSourceConnected = true;
+            console.log("🎵 Audio source connected to analyser");
+          } catch (error) {
+            console.warn("⚠️ Could not connect audio source:", error);
+
+            // Try to create a simple oscillator as fallback
+            try {
+              console.log("🔄 Trying oscillator fallback...");
+              const oscillator = audioContext.createOscillator();
+              const gainNode = audioContext.createGain();
+
+              oscillator.connect(gainNode);
+              gainNode.connect(analyser);
+              analyser.connect(audioContext.destination);
+
+              gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+              oscillator.start();
+              oscillator.stop(audioContext.currentTime + 0.1);
+
+              console.log("🎵 Oscillator fallback connected");
+            } catch (fallbackError) {
+              console.warn("⚠️ Oscillator fallback failed:", fallbackError);
+            }
+          }
+        }
+
+        // Draw wave visualizer
+        function drawWave() {
+          // Check if audio analysis is available
+          if (!analyser || !dataArray) {
+            // Use fallback animation
+            drawFallbackWave();
+            return;
+          }
+
+          try {
+            analyser.getByteFrequencyData(dataArray);
+
+            const canvasWidth = waveCanvas.getBoundingClientRect().width;
+            const canvasHeight = waveCanvas.getBoundingClientRect().height;
+
+            // Clear canvas with fade effect
+            waveCtx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            waveCtx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            // Calculate bass, mid, and treble frequencies
+            const bassEnd = Math.floor(dataArray.length * 0.1);
+            const midEnd = Math.floor(dataArray.length * 0.4);
+
+            let bassSum = 0,
+              midSum = 0,
+              trebleSum = 0;
+            for (let i = 0; i < bassEnd; i++) bassSum += dataArray[i];
+            for (let i = bassEnd; i < midEnd; i++) midSum += dataArray[i];
+            for (let i = midEnd; i < dataArray.length; i++)
+              trebleSum += dataArray[i];
+
+            const bassAvg = bassSum / bassEnd;
+            const midAvg = midSum / (midEnd - bassEnd);
+            const trebleAvg = trebleSum / (dataArray.length - midEnd);
+
+            const totalEnergy = (bassAvg + midAvg + trebleAvg) / 3;
+            const energyMultiplier = Math.min(totalEnergy / 50, 3); // Boost up to 3x
+
+            // Create dynamic gradient based on frequency content
+            const gradient = waveCtx.createLinearGradient(0, 0, canvasWidth, 0);
+            if (bassAvg > midAvg && bassAvg > trebleAvg) {
+              // Bass dominant - red to orange
+              gradient.addColorStop(0, "#ff4444");
+              gradient.addColorStop(0.5, "#ff8844");
+              gradient.addColorStop(1, "#ffaa44");
+            } else if (trebleAvg > bassAvg && trebleAvg > midAvg) {
+              // Treble dominant - cyan to blue
+              gradient.addColorStop(0, "#44ffff");
+              gradient.addColorStop(0.5, "#4488ff");
+              gradient.addColorStop(1, "#4444ff");
+            } else {
+              // Balanced - rainbow
+              gradient.addColorStop(0, "#ff0000");
+              gradient.addColorStop(0.2, "#ff69b4");
+              gradient.addColorStop(0.4, "#9932cc");
+              gradient.addColorStop(0.6, "#0000ff");
+              gradient.addColorStop(0.8, "#00ffff");
+              gradient.addColorStop(1, "#32cd32");
+            }
+
+            // Draw enhanced wave with rhythm detection
+            const barWidth = canvasWidth / dataArray.length;
+            const centerY = canvasHeight / 2;
+
+            for (let i = 0; i < dataArray.length; i++) {
+              let barHeight = (dataArray[i] / 255) * (canvasHeight * 0.9);
+
+              // Apply energy multiplier for stronger response
+              barHeight *= energyMultiplier;
+
+              // Add rhythm enhancement based on frequency range
+              if (i < bassEnd) {
+                // Bass frequencies - slower, bigger waves
+                barHeight *= 1 + bassAvg / 100;
+              } else if (i < midEnd) {
+                // Mid frequencies - balanced response
+                barHeight *= 1 + midAvg / 150;
+              } else {
+                // Treble frequencies - faster, sharper response
+                barHeight *= 1 + trebleAvg / 200;
+              }
+
+              // Limit maximum height
+              barHeight = Math.min(barHeight, canvasHeight * 0.9);
+
+              const x = i * barWidth;
+
+              // Create multiple layers with enhanced effects
+              for (let layer = 0; layer < 4; layer++) {
+                const layerOffset = layer * 1.5;
+                const layerHeight = barHeight * (1 - layer * 0.15);
+                const layerAlpha =
+                  (1 - layer * 0.2) * Math.min(energyMultiplier, 1.5);
+
+                waveCtx.fillStyle = gradient;
+                waveCtx.globalAlpha = layerAlpha;
+                waveCtx.fillRect(
+                  x + layerOffset,
+                  centerY - layerHeight / 2,
+                  Math.max(barWidth - 1, 1),
+                  layerHeight
+                );
+              }
+            }
+
+            // Add dynamic glow effect based on energy
+            const glowIntensity = Math.min(totalEnergy / 30, 15);
+            waveCtx.shadowColor = "#ffffff";
+            waveCtx.shadowBlur = glowIntensity;
+            waveCtx.globalAlpha = 0.4 * Math.min(energyMultiplier, 2);
+
+            // Redraw with enhanced glow
+            for (let i = 0; i < dataArray.length; i++) {
+              let barHeight = (dataArray[i] / 255) * (canvasHeight * 0.9);
+              barHeight *= energyMultiplier;
+
+              if (i < bassEnd) barHeight *= 1 + bassAvg / 100;
+              else if (i < midEnd) barHeight *= 1 + midAvg / 150;
+              else barHeight *= 1 + trebleAvg / 200;
+
+              barHeight = Math.min(barHeight, canvasHeight * 0.9);
+              const x = i * barWidth;
+
+              waveCtx.fillStyle = gradient;
+              waveCtx.fillRect(
+                x,
+                centerY - barHeight / 2,
+                Math.max(barWidth - 1, 1),
+                barHeight
+              );
+            }
+
+            // Add center pulse effect for bass
+            if (bassAvg > 30) {
+              const pulseRadius = (bassAvg / 255) * 20 * energyMultiplier;
+              const pulseAlpha = Math.min(bassAvg / 100, 0.6);
+
+              waveCtx.shadowBlur = 20;
+              waveCtx.globalAlpha = pulseAlpha;
+              waveCtx.fillStyle = "#ff4444";
+              waveCtx.beginPath();
+              waveCtx.arc(
+                canvasWidth / 2,
+                centerY,
+                pulseRadius,
+                0,
+                Math.PI * 2
+              );
+              waveCtx.fill();
+            }
+
+            // Reset shadow and alpha
+            waveCtx.shadowBlur = 0;
+            waveCtx.globalAlpha = 1;
+
+            animationId = requestAnimationFrame(drawWave);
+          } catch (error) {
+            console.warn("⚠️ Audio analysis failed, using fallback:", error);
+            drawFallbackWave();
+          }
+        }
+
+        // Fallback wave animation without audio data
+        function drawFallbackWave() {
+          const canvasWidth = waveCanvas.getBoundingClientRect().width;
+          const canvasHeight = waveCanvas.getBoundingClientRect().height;
+
+          // Clear canvas with fade effect
+          waveCtx.fillStyle = "rgba(0, 0, 0, 0.1)";
+          waveCtx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+          // Create dynamic gradient that changes over time
+          const time = Date.now() * 0.002;
+          const gradient = waveCtx.createLinearGradient(0, 0, canvasWidth, 0);
+
+          // Animate gradient colors
+          const hue1 = (Math.sin(time) * 30 + 330) % 360;
+          const hue2 = (Math.sin(time + 2) * 30 + 60) % 360;
+          const hue3 = (Math.sin(time + 4) * 30 + 180) % 360;
+
+          gradient.addColorStop(0, `hsl(${hue1}, 100%, 50%)`);
+          gradient.addColorStop(0.5, `hsl(${hue2}, 100%, 50%)`);
+          gradient.addColorStop(1, `hsl(${hue3}, 100%, 50%)`);
+
+          // Create more complex animated wave pattern
+          const numBars = 128;
+          const barWidth = canvasWidth / numBars;
+          const centerY = canvasHeight / 2;
+
+          for (let i = 0; i < numBars; i++) {
+            // Create multiple wave patterns with different frequencies
+            const wave1 = Math.sin(time + i * 0.08) * 0.4;
+            const wave2 = Math.sin(time * 1.7 + i * 0.15) * 0.3;
+            const wave3 = Math.sin(time * 0.6 + i * 0.03) * 0.2;
+            const wave4 = Math.sin(time * 2.3 + i * 0.25) * 0.1;
+
+            // Add rhythm simulation
+            const beat = Math.sin(time * 2) > 0.8 ? 1.5 : 1;
+            const barHeight =
+              (wave1 + wave2 + wave3 + wave4 + 1) * canvasHeight * 0.6 * beat;
+            const x = i * barWidth;
+
+            // Create enhanced layers for depth effect
+            for (let layer = 0; layer < 5; layer++) {
+              const layerOffset = layer * 1.2;
+              const layerHeight = barHeight * (1 - layer * 0.12);
+              const layerAlpha = (1 - layer * 0.15) * 0.8;
+
+              waveCtx.fillStyle = gradient;
+              waveCtx.globalAlpha = layerAlpha;
+              waveCtx.fillRect(
+                x + layerOffset,
+                centerY - layerHeight / 2,
+                Math.max(barWidth - 1, 1),
+                layerHeight
+              );
+            }
+          }
+
+          // Add dynamic glow effect
+          const glowIntensity = 8 + Math.sin(time * 3) * 5;
+          waveCtx.shadowColor = "#ffffff";
+          waveCtx.shadowBlur = glowIntensity;
+          waveCtx.globalAlpha = 0.4;
+
+          // Redraw with glow
+          for (let i = 0; i < numBars; i++) {
+            const wave1 = Math.sin(time + i * 0.08) * 0.4;
+            const wave2 = Math.sin(time * 1.7 + i * 0.15) * 0.3;
+            const wave3 = Math.sin(time * 0.6 + i * 0.03) * 0.2;
+            const wave4 = Math.sin(time * 2.3 + i * 0.25) * 0.1;
+
+            const beat = Math.sin(time * 2) > 0.8 ? 1.5 : 1;
+            const barHeight =
+              (wave1 + wave2 + wave3 + wave4 + 1) * canvasHeight * 0.6 * beat;
+            const x = i * barWidth;
+
+            waveCtx.fillStyle = gradient;
+            waveCtx.fillRect(
+              x,
+              centerY - barHeight / 2,
+              Math.max(barWidth - 1, 1),
+              barHeight
+            );
+          }
+
+          // Add center pulse effect
+          const pulseRadius = 15 + Math.sin(time * 4) * 10;
+          const pulseAlpha = 0.3 + Math.sin(time * 6) * 0.2;
+
+          waveCtx.shadowBlur = 25;
+          waveCtx.globalAlpha = pulseAlpha;
+          waveCtx.fillStyle = `hsl(${(hue1 + hue2) / 2}, 100%, 70%)`;
+          waveCtx.beginPath();
+          waveCtx.arc(canvasWidth / 2, centerY, pulseRadius, 0, Math.PI * 2);
+          waveCtx.fill();
+
+          // Reset shadow and alpha
+          waveCtx.shadowBlur = 0;
+          waveCtx.globalAlpha = 1;
+
+          animationId = requestAnimationFrame(drawFallbackWave);
+        }
+
+        // Start wave animation
+        function startWaveAnimation() {
+          if (!isPlaying) return;
+
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+          }
+
+          initAudioContext();
+          connectAudioSource();
+          drawWave();
+        }
+
+        // Stop wave animation
+        function stopWaveAnimation() {
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+
+          // Clear canvas
+          const canvasWidth = waveCanvas.getBoundingClientRect().width;
+          const canvasHeight = waveCanvas.getBoundingClientRect().height;
+          waveCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+        }
+
+        // Test audio function
+        window.testAudio = function () {
+          console.log("🔊 Testing audio...");
+          if (manhkiuc) {
+            console.log("📹 Video element found:", manhkiuc);
+            console.log("📹 Video src:", manhkiuc.src);
+            console.log("📹 Video muted:", manhkiuc.muted);
+            console.log("📹 Video volume:", manhkiuc.volume);
+            console.log("📹 Video paused:", manhkiuc.paused);
+            console.log("📹 Video readyState:", manhkiuc.readyState);
+
+            // Try to play
+            manhkiuc.muted = false;
+            manhkiuc.volume = 1.0;
+            manhkiuc
+              .play()
+              .then(() => {
+                console.log("✅ Test audio: Video playing successfully!");
+                console.log("📹 After play - muted:", manhkiuc.muted);
+                console.log("📹 After play - volume:", manhkiuc.volume);
+
+                // Test with separate audio element
+                console.log("🔄 Testing with separate audio element...");
+                const audio = new Audio();
+                audio.src = "manhkiuc.mp4";
+                audio.volume = 1.0;
+                audio.muted = false;
+                audio
+                  .play()
+                  .then(() => {
+                    console.log("✅ Audio element playing successfully!");
+                  })
+                  .catch((audioError) => {
+                    console.error("❌ Audio element failed:", audioError);
+                  });
+              })
+              .catch((error) => {
+                console.error("❌ Test audio failed:", error);
+
+                // Try muted play
+                manhkiuc.muted = true;
+                manhkiuc
+                  .play()
+                  .then(() => {
+                    console.log("✅ Test audio: Muted video playing");
+                    setTimeout(() => {
+                      manhkiuc.muted = false;
+                      console.log("🔊 Attempting to unmute...");
+                    }, 1000);
+                  })
+                  .catch((mutedError) => {
+                    console.error(
+                      "❌ Test audio muted also failed:",
+                      mutedError
+                    );
+                  });
+              });
+          } else {
+            console.error("❌ Video element not found!");
+          }
+        };
+
+        // Test online audio function
+        window.testOnlineAudio = function () {
+          console.log("🌐 Testing online audio...");
+
+          // Test with a simple online audio file
+          const audio = new Audio();
+          audio.src =
+            "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav";
+          audio.volume = 0.5;
+          audio.muted = false;
+
+          audio
+            .play()
+            .then(() => {
+              console.log("✅ Online audio playing successfully!");
+              console.log("🔊 This confirms your browser audio works");
+            })
+            .catch((error) => {
+              console.error("❌ Online audio failed:", error);
+              console.log("🔇 Your browser may have audio issues");
+            });
+        };
+
+        // Enter site function
+        window.enterSite = function () {
+          console.log("🚀 Entering site...");
+          console.log("📹 Video element:", manhkiuc);
+
+          // Hide enter overlay immediately
+          if (enterOverlay) {
+            enterOverlay.classList.add("hidden");
+            enterOverlay.style.display = "none";
+          }
+
+          // Use the same logic as testAudio function
+          if (manhkiuc) {
+            console.log("🎵 Playing music using testAudio logic...");
+
+            // Set video properties exactly like testAudio
+            manhkiuc.muted = false;
+            manhkiuc.volume = 1.0;
+            manhkiuc.loop = true;
+            manhkiuc.playsInline = true;
+
+            // Play the video
+            manhkiuc
+              .play()
+              .then(() => {
+                console.log("✅ Video playing successfully!");
+                console.log("📹 After play - muted:", manhkiuc.muted);
+                console.log("📹 After play - volume:", manhkiuc.volume);
+
+                // Set playing state
+                isPlaying = true;
+                isMuted = false;
+                musicStarted = true;
+
+                // Start audio analysis and wave animation
+                initAudioContext();
+                connectAudioSource();
+                startWaveAnimation();
+
+                // Also test with separate audio element like in testAudio
+                console.log("🔄 Testing with separate audio element...");
+                const audio = new Audio();
+                audio.src = "manhkiuc.mp4";
+                audio.volume = 1.0;
+                audio.muted = false;
+                audio
+                  .play()
+                  .then(() => {
+                    console.log("✅ Audio element also playing successfully!");
+                  })
+                  .catch((audioError) => {
+                    console.warn(
+                      "⚠️ Audio element failed but video is working:",
+                      audioError
+                    );
+                  });
+              })
+              .catch((error) => {
+                console.error("❌ Video play failed:", error);
+
+                // Try muted play as fallback
+                console.log("🔄 Trying muted play...");
+                manhkiuc.muted = true;
+                manhkiuc
+                  .play()
+                  .then(() => {
+                    console.log("✅ Muted video playing");
+                    isPlaying = true;
+                    isMuted = true;
+                    musicStarted = true;
+
+                    // Start wave animation
+                    initAudioContext();
+                    connectAudioSource();
+                    startWaveAnimation();
+
+                    // Try to unmute after 1 second
+                    setTimeout(() => {
+                      try {
+                        manhkiuc.muted = false;
+                        isMuted = false;
+                        console.log("🔊 Successfully unmuted!");
+                      } catch (e) {
+                        console.log("🔇 Could not unmute");
+                      }
+                    }, 1000);
+                  })
+                  .catch((mutedError) => {
+                    console.error("❌ Muted play also failed:", mutedError);
+                    console.error("💥 All audio methods failed!");
+
+                    // Still start wave animation for visual effect
+                    startWaveAnimation();
+                  });
+              });
+          } else {
+            console.error("❌ Video element not found!");
+          }
+        };
+
+        // Config
+        const retryDelays = [100, 300, 700, 1500, 3000, 5000];
+        let autoplaySucceeded = { bg: false, music: false };
+
+        // Utility: try to play a video with retries and AudioContext resume attempt
+        async function tryAutoplay(video, idLabel = "video") {
+          if (!video) return false;
+
+          // Ensure attributes that help autoplay
+          video.muted = true;
+          video.playsInline = true;
+          video.autoplay = true;
+          video.loop = true;
+
+          // Try direct play with retries
+          for (let i = 0; i < retryDelays.length; i++) {
+            try {
+              await video.play();
+              console.log(`✅ [${idLabel}] play succeeded (attempt ${i + 1})`);
+              return true;
+            } catch (err) {
+              console.warn(
+                `⚠️ [${idLabel}] play attempt ${i + 1} failed:`,
+                err
+              );
+
+              // Try to resume WebAudio context (some browsers require it)
+              try {
+                const AudioCtx =
+                  window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) {
+                  const ctx = new AudioCtx();
+                  if (ctx.state === "suspended") {
+                    await ctx.resume();
+                    console.log(`🎛️ AudioContext resumed for ${idLabel}`);
+                  }
+                }
+              } catch (e) {
+                // ignore
+              }
+
+              await new Promise((r) => setTimeout(r, retryDelays[i]));
+            }
+          }
+
+          console.warn(`❌ [${idLabel}] autoplay not allowed after retries`);
+          return false;
+        }
+
+        // Initialize everything on load
+        window.addEventListener("load", async () => {
+          // Initialize canvas
+          initCanvas();
+
+          // Only play background video (muted)
+          if (bgVideo) {
+            autoplaySucceeded.bg = await tryAutoplay(bgVideo, "bgVideo");
+            // keep bgVideo muted if succeeded and visually it's background
+            bgVideo.muted = true;
+          }
+
+          // Don't auto-play music video - wait for user to click "Enter"
+          if (manhkiuc) {
+            console.log("🎵 Setting up music video...");
+            console.log("📹 Video src:", manhkiuc.src || "No src");
+
+            // Set video properties but don't play
+            manhkiuc.muted = false;
+            manhkiuc.volume = 0.8;
+            manhkiuc.autoplay = false;
+            manhkiuc.playsInline = true;
+            manhkiuc.loop = true;
+
+            // Force load the video
+            manhkiuc.load();
+
+            // Add event listeners for debugging
+            manhkiuc.addEventListener("loadstart", () =>
+              console.log("🎵 Video load started")
+            );
+            manhkiuc.addEventListener("loadeddata", () =>
+              console.log("🎵 Video data loaded")
+            );
+            manhkiuc.addEventListener("canplay", () =>
+              console.log("🎵 Video can play")
+            );
+            manhkiuc.addEventListener("error", (e) =>
+              console.error("🎵 Video error:", e)
+            );
+            manhkiuc.addEventListener("volumechange", () =>
+              console.log(
+                "🔊 Volume changed:",
+                manhkiuc.volume,
+                "Muted:",
+                manhkiuc.muted
+              )
+            );
+            manhkiuc.addEventListener("play", () =>
+              console.log("▶️ Video started playing")
+            );
+            manhkiuc.addEventListener("pause", () =>
+              console.log("⏸️ Video paused")
+            );
+            manhkiuc.addEventListener("loadedmetadata", () => {
+              console.log("📊 Video metadata loaded:");
+              console.log("📊 Duration:", manhkiuc.duration);
+              console.log(
+                "📊 Video tracks:",
+                manhkiuc.videoTracks?.length || "N/A"
+              );
+              console.log(
+                "📊 Audio tracks:",
+                manhkiuc.audioTracks?.length || "N/A"
+              );
+              console.log(
+                "📊 Text tracks:",
+                manhkiuc.textTracks?.length || "N/A"
+              );
+            });
+
+            console.log("🎵 Video setup complete");
+          }
+
+          // Handle window resize
+          window.addEventListener("resize", initCanvas);
+
+          // Start poem animation after 2 seconds
+          setTimeout(() => {
+            startPoemAnimation();
+          }, 2000);
+        });
+
+        // Fallback overlay behavior
+        function showOverlayFallback() {
+          if (!overlay) return;
+          overlay.style.display = "flex";
+          overlay.setAttribute("aria-hidden", "false");
+
+          // Play + unmute
+          btnPlayUnmute.addEventListener("click", async () => {
+            try {
+              // Resume audio context first (some mobile browsers)
+              const AudioCtx = window.AudioContext || window.webkitAudioContext;
+              if (AudioCtx) {
+                const ctx = new AudioCtx();
+                if (ctx.state === "suspended") {
+                  await ctx.resume();
+                }
+              }
+            } catch (e) {
+              /* ignore */
+            }
+
+            // Play both videos
+            if (bgVideo) {
+              try {
+                bgVideo.muted = true; // keep background muted
+                await bgVideo.play();
+              } catch (e) {}
+            }
+            if (manhkiuc) {
+              try {
+                manhkiuc.muted = false;
+                manhkiuc.volume = 0.6;
+                await manhkiuc.play();
+              } catch (e) {
+                // if direct unmute fails, try muted play then unmute
+                try {
+                  manhkiuc.muted = true;
+                  await manhkiuc.play();
+                  manhkiuc.muted = false;
+                } catch (e2) {
+                  console.warn("❌ play/unmute still failed", e2);
+                }
+              }
+            }
+
+            hideOverlay();
+          });
+
+          // Play muted (no sound)
+          btnPlayMuted.addEventListener("click", async () => {
+            if (bgVideo) {
+              try {
+                bgVideo.muted = true;
+                await bgVideo.play();
+              } catch (e) {}
+            }
+            if (manhkiuc) {
+              try {
+                manhkiuc.muted = true;
+                await manhkiuc.play();
+              } catch (e) {}
+            }
+            hideOverlay();
+          });
+
+          // Also allow any first user gesture anywhere to trigger play (convenience)
+          function onFirstGesture() {
+            if (bgVideo) {
+              bgVideo.muted = true;
+              bgVideo.play().catch(() => {});
+            }
+            if (manhkiuc) {
+              manhkiuc.muted = true;
+              manhkiuc.play().catch(() => {});
+            }
+            hideOverlay();
+            removeGestureListeners();
+          }
+          function removeGestureListeners() {
+            ["click", "touchstart", "keydown"].forEach((ev) =>
+              document.removeEventListener(ev, onFirstGesture)
+            );
+          }
+          ["click", "touchstart", "keydown"].forEach((ev) =>
+            document.addEventListener(ev, onFirstGesture, { once: true })
+          );
+        }
+
+        function hideOverlay() {
+          if (!overlay) return;
+          overlay.style.display = "none";
+          overlay.setAttribute("aria-hidden", "true");
+        }
+
+        // Extra: If autoplay was blocked but later user interacts, try to unmute gradually
+        document.addEventListener(
+          "click",
+          async () => {
+            if (!manhkiuc) return;
+            try {
+              if (manhkiuc.paused) {
+                await manhkiuc.play();
+              }
+              // Try unmute after a user gesture
+              if (manhkiuc.muted) {
+                manhkiuc.muted = false;
+                manhkiuc.volume = 0.5;
+              }
+            } catch (e) {
+              // ignore
+            }
+          },
+          { passive: true }
+        );
+
+        // Make sure cursor image is set (original behavior)
+        document.body.style.cursor =
+          "url(https://r2.guns.lol/d65efee2-e2af-42e5-b2f4-63ecf4fb1afd.png) 16 16, auto";
+
+        // Shooting Stars (kept same)
+        function createShootingStar() {
+          const star = document.createElement("div");
+          star.classList.add("shooting-star");
+          star.style.left = Math.random() * 100 + "vw";
+          star.style.top = Math.random() * 100 + "vh";
+          const size = 4 + Math.random() * 3;
+          star.style.width = size + "px";
+          star.style.height = size + "px";
+          star.style.animationDuration = "2s";
+          star.style.opacity = 0.7 + Math.random() * 0.3;
+          document.body.appendChild(star);
+          setTimeout(() => star.remove(), 2000);
+        }
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => createShootingStar(), i * 2000);
+        }
+        setInterval(createShootingStar, 2000);
+
+        // Play Video Function with immediate sound
+        function playVideo() {
+          const video = document.getElementById("manhkiuc");
+          if (video) {
+            console.log("🎵 Manual play function called");
+
+            // Set video properties for immediate sound
+            video.muted = false;
+            video.volume = 0.8;
+            video.autoplay = true;
+            video.playsInline = true;
+
+            // Strategy 1: Try immediate unmuted play
+            video
+              .play()
+              .then(() => {
+                console.log("✅ Video started playing with SOUND!");
+                video.muted = false;
+                video.volume = 0.8;
+
+                // Update UI state
+                isPlaying = true;
+                isMuted = false;
+
+                // Start wave animation
+                startWaveAnimation();
+              })
+              .catch((e) => {
+                console.log("❌ Unmuted play failed:", e);
+
+                // Strategy 2: Use user interaction to enable sound
+                enableSoundWithUserInteraction(video);
+              });
+          }
+        }
+
+        // Enable sound using user interaction
+        function enableSoundWithUserInteraction(video) {
+          console.log("🎯 Enabling sound with user interaction...");
+
+          // Create a real clickable element
+          const soundButton = document.createElement("div");
+          soundButton.innerHTML = "🔊";
+          soundButton.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 10000;
+            border: 3px solid #ff6b6b;
+            box-shadow: 0 0 20px rgba(255,107,107,0.5);
+          `;
+
+          soundButton.onclick = () => {
+            console.log("🎵 Sound button clicked - enabling audio!");
+            video.muted = false;
+            video.volume = 0.8;
+            video.play().then(() => {
+              console.log("✅ Video playing with SOUND after button click!");
+
+              // Update UI state
+              isPlaying = true;
+              isMuted = false;
+
+              // Start wave animation
+              startWaveAnimation();
+            });
+            document.body.removeChild(soundButton);
+          };
+
+          document.body.appendChild(soundButton);
+
+          // Auto-click the sound button immediately
+          soundButton.click();
+          console.log("🎵 Auto-clicked sound button");
+        }
+
+        // Simulate user gesture for autoplay
+        function simulateUserGesture(video) {
+          console.log("🎯 Simulating user gesture...");
+
+          // Create and dispatch multiple events
+          const events = [
+            "mousedown",
+            "mouseup",
+            "click",
+            "touchstart",
+            "touchend",
+          ];
+
+          events.forEach((eventType, index) => {
+            const event = new Event(eventType, { bubbles: true });
+            video.dispatchEvent(event);
+            console.log(`🎯 Dispatched ${eventType} event`);
+          });
+
+          // Try to play immediately after all events
+          video
+            .play()
+            .then(() => {
+              console.log("✅ Video played after gesture simulation");
+              video.muted = false;
+              video.volume = 0.5;
+            })
+            .catch((e) => {
+              console.log("❌ Gesture simulation failed:", e);
+            });
+        }
+
+        // Create real user interaction for autoplay
+        function createRealUserInteraction() {
+          console.log("🎯 Creating real user interaction for autoplay...");
+
+          // Create a temporary invisible button
+          const tempButton = document.createElement("button");
+          tempButton.style.position = "fixed";
+          tempButton.style.top = "50%";
+          tempButton.style.left = "50%";
+          tempButton.style.width = "100px";
+          tempButton.style.height = "100px";
+          tempButton.style.background = "transparent";
+          tempButton.style.border = "none";
+          tempButton.style.zIndex = "9999";
+          tempButton.style.opacity = "0";
+          tempButton.style.cursor = "pointer";
+
+          // Add click handler to play video
+          tempButton.onclick = () => {
+            console.log("🎵 Real user interaction detected - playing video");
+            playVideo();
+            document.body.removeChild(tempButton);
+          };
+
+          // Add to DOM
+          document.body.appendChild(tempButton);
+
+          // Auto-click the button immediately
+          tempButton.click();
+          console.log("✅ Real user interaction triggered");
+        }
+
+        // Auto-click anywhere on page immediately
+        function autoClickAnywhere() {
+          console.log("🎯 Auto-clicking anywhere on page immediately...");
+
+          // First create real user interaction
+          createRealUserInteraction();
+
+          // Then try synthetic events
+          const clickEvent = new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+            clientX: Math.random() * window.innerWidth,
+            clientY: Math.random() * window.innerHeight,
+          });
+
+          document.dispatchEvent(clickEvent);
+          document.body.click();
+
+          // Try clicking on play button if it exists
+          const playBtn = document.querySelector(".play-btn");
+          if (playBtn) {
+            playBtn.click();
+            console.log("🎵 Play button clicked");
+          }
+
+          console.log("✅ Auto-click dispatched to random location");
+        }
+
+        // Start auto-click after page loads
+        window.addEventListener("load", autoClickAnywhere);
+
+        // Fallback: Auto-click on DOM ready
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", autoClickAnywhere);
+        } else {
+          autoClickAnywhere();
+        }
+
+        // Web Audio API bypass method
+        function tryWebAudioBypass() {
+          console.log("🎵 Trying Web Audio API bypass...");
+
+          try {
+            const audioContext = new (window.AudioContext ||
+              window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+
+            // After Web Audio interaction, try to play video immediately
+            console.log(
+              "🎵 Web Audio interaction completed - trying video play"
+            );
+            playVideo();
+          } catch (e) {
+            console.log("❌ Web Audio API failed:", e);
+          }
+        }
+
+        // Create audio element as backup
+        function createAudioBackup() {
+          console.log("🎵 Creating audio backup element...");
+
+          const audio = document.createElement("audio");
+          audio.src =
+            "https://r2.guns.lol/c791a659-e879-4688-a889-9b01eaf784db.mp4";
+          audio.autoplay = true;
+          audio.loop = true;
+          audio.volume = 0.8;
+          audio.style.display = "none";
+
+          audio
+            .play()
+            .then(() => {
+              console.log("✅ Audio backup playing successfully!");
+            })
+            .catch((e) => {
+              console.log("❌ Audio backup failed:", e);
+            });
+
+          document.body.appendChild(audio);
+          return audio;
+        }
+
+        // Multiple fallback methods - execute immediately
+        console.log("🔄 Method 1: Direct video play immediately");
+        playVideo();
+
+        console.log("🔄 Method 2: Audio backup creation immediately");
+        createAudioBackup();
+
+        console.log("🔄 Method 3: Web Audio bypass immediately");
+        tryWebAudioBypass();
+
+        console.log("🔄 Method 4: YouTube iframe backup immediately");
+        createYouTubeBackup();
+
+        console.log("🔄 Method 5: Final video attempt immediately");
+        playVideo();
+
+        // Create YouTube iframe as ultimate backup
+        function createYouTubeBackup() {
+          console.log("🎵 Creating YouTube iframe backup...");
+
+          const iframe = document.createElement("iframe");
+          iframe.src =
+            "https://www.youtube.com/embed/MoYaUjvIxyE?autoplay=1&mute=0&loop=1&playlist=MoYaUjvIxyE";
+          iframe.width = "1";
+          iframe.height = "1";
+          iframe.style.cssText = `
+            position: fixed;
+            top: -100px;
+            left: -100px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+          `;
+          iframe.allow = "autoplay; encrypted-media";
+
+          document.body.appendChild(iframe);
+
+          console.log("✅ YouTube iframe backup created");
+        }
+      })();
     </script>
   </body>
 </html>
