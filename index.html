@@ -1,131 +1,700 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>click to enter...</title>
-
-    <!-- 👇 Những thẻ OG Discord dùng để hiển thị preview -->
-    <meta property="og:title" content="click to enter..." />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>@Huyền Chi | Profile</title>
+    <meta name="description" content="Trang cá nhân của Nguyễn Thị Huyền Chi" />
+    <meta property="og:title" content="@Huyền Chi | Profile" />
     <meta
       property="og:description"
-      content="❄️ a small world waiting for you..."
+      content="Trang cá nhân của Nguyễn Thị Huyền Chi"
     />
-    <meta
-      property="og:image"
-      content="https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482925aIU/anh-mo-ta.png"
-    />
-    <meta property="og:url" content="https://clicktoenter.vercel.app" />
-    <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#000000" />
+    <meta property="theme-color" content="#ffffff" />
+
     <style>
-      body {
-        background: black;
-        color: white;
-        font-family: Arial, sans-serif;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: 2rem;
+      * {
         margin: 0;
-        overflow: hidden;
+        padding: 0;
+        box-sizing: border-box;
       }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: #000;
+        color: #fff;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+        scroll-behavior: smooth;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      /* Background Video */
+      .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+
+      /* Header Name */
       .header-name {
-        position: absolute;
-        top: 30%;
-        font-size: 3rem;
-        font-weight: bold;
-        background: linear-gradient(45deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
-        background-size: 300% 300%;
+        position: fixed;
+        top: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 4rem;
+        font-weight: 700;
+        background: linear-gradient(
+          45deg,
+          #ff6ec4,
+          #7873f5,
+          #4facfe,
+          #00f2fe,
+          #ff6ec4,
+          #ff9a56,
+          #ff6ec4
+        );
+        background-size: 400% 400%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradient 3s ease infinite, glow 2s ease-in-out infinite;
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        z-index: 10;
+        animation: gradientFlow 6s ease-in-out infinite,
+          floating 4s ease-in-out infinite, pulseGlow 3s ease-in-out infinite,
+          textShake 8s ease-in-out infinite;
+        z-index: 100;
+        text-align: center;
+        text-shadow: 0 0 40px rgba(255, 110, 196, 0.6);
+        letter-spacing: 3px;
+        filter: drop-shadow(0 0 20px rgba(120, 115, 245, 0.8));
+        transition: all 0.3s ease;
       }
-      @keyframes gradient {
+
+      .header-name:hover {
+        transform: translateX(-50%) scale(1.1);
+        text-shadow: 0 0 60px rgba(255, 255, 255, 0.9);
+        filter: drop-shadow(0 0 30px rgba(255, 110, 196, 1));
+      }
+
+      @keyframes gradientFlow {
         0% {
           background-position: 0% 50%;
+          filter: hue-rotate(0deg);
+        }
+        25% {
+          background-position: 100% 50%;
+          filter: hue-rotate(90deg);
         }
         50% {
-          background-position: 100% 50%;
+          background-position: 100% 100%;
+          filter: hue-rotate(180deg);
+        }
+        75% {
+          background-position: 0% 100%;
+          filter: hue-rotate(270deg);
         }
         100% {
           background-position: 0% 50%;
+          filter: hue-rotate(360deg);
         }
       }
-      @keyframes glow {
+
+      @keyframes floating {
         0%,
         100% {
-          filter: drop-shadow(0 0 10px rgba(255, 110, 196, 0.7));
+          transform: translateX(-50%) translateY(0px) rotate(0deg);
+        }
+        25% {
+          transform: translateX(-50%) translateY(-15px) rotate(1deg);
         }
         50% {
-          filter: drop-shadow(0 0 25px rgba(120, 115, 245, 0.9));
+          transform: translateX(-50%) translateY(-25px) rotate(0deg);
+        }
+        75% {
+          transform: translateX(-50%) translateY(-15px) rotate(-1deg);
         }
       }
-      .content {
-        animation: pulse 2s ease-in-out infinite;
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          text-shadow: 0 0 20px rgba(255, 110, 196, 0.6),
+            0 0 40px rgba(120, 115, 245, 0.4), 0 0 60px rgba(79, 172, 254, 0.2);
+        }
+        50% {
+          text-shadow: 0 0 30px rgba(255, 110, 196, 0.8),
+            0 0 60px rgba(120, 115, 245, 0.6), 0 0 90px rgba(79, 172, 254, 0.4);
+        }
       }
+
+      @keyframes textShake {
+        0%,
+        90%,
+        100% {
+          transform: translateX(-50%) translateY(0px) rotate(0deg);
+        }
+        5% {
+          transform: translateX(-50%) translateY(-2px) rotate(0.5deg);
+        }
+        10% {
+          transform: translateX(-50%) translateY(2px) rotate(-0.5deg);
+        }
+        15% {
+          transform: translateX(-50%) translateY(-1px) rotate(0.3deg);
+        }
+        20% {
+          transform: translateX(-50%) translateY(1px) rotate(-0.3deg);
+        }
+      }
+
+      /* Main Container */
+      .container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 150px 20px 50px;
+      }
+
+      /* Profile Card */
+      .profile-card {
+        border-radius: 25px;
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+        animation: fadeIn 1s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Avatar */
+      .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto 25px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        animation: pulse 3s ease-in-out infinite;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 4rem;
+      }
+
       @keyframes pulse {
         0%,
         100% {
           transform: scale(1);
-          opacity: 1;
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
         50% {
           transform: scale(1.05);
-          opacity: 0.8;
+          box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
         }
       }
-      .snowflake {
-        position: absolute;
-        color: white;
-        font-size: 1.5em;
-        animation: fall linear forwards;
-        pointer-events: none;
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
-      @keyframes fall {
+
+      /* Username */
+      .username {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 15px;
+        color: #fff;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      }
+
+      /* Entry Text */
+      .entry-text {
+        text-align: center;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 30px;
+        animation: blink 2s ease-in-out infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Social Icons */
+      .socials {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+
+      .social-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .social-icon:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+      }
+
+      /* Shooting Stars */
+      .shooting-star {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        background: #fff;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 50;
+        animation: shoot 2s linear forwards, glow 0.8s ease-in-out infinite;
+        user-select: none;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      }
+
+      /* Star trail */
+      .shooting-star::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -50px;
+        width: 50px;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(255, 255, 255, 0.8) 30%,
+          rgba(255, 255, 255, 1) 70%,
+          transparent 100%
+        );
+        transform: translateY(-50%);
+        animation: trailFade 1s ease-out forwards;
+      }
+
+      @keyframes trailFade {
         0% {
-          transform: translateY(-10vh) rotate(0deg);
+          opacity: 1;
+          transform: translateY(-50%) scaleX(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-50%) scaleX(0.3);
+        }
+      }
+
+      @keyframes shoot {
+        0% {
+          transform: translateX(-10vw) translateY(-10vh);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
           opacity: 1;
         }
         100% {
-          transform: translateY(110vh) rotate(360deg);
+          transform: translateX(110vw) translateY(110vh);
           opacity: 0;
+        }
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          box-shadow: 0 0 5px rgba(255, 255, 255, 0.6),
+            0 0 10px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 10px rgba(255, 255, 255, 1),
+            0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+      }
+
+      /* YouTube Player */
+      .youtube-container {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 10000;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .youtube-container iframe {
+        width: 280px;
+        height: 158px;
+      }
+
+      /* Responsive Design */
+
+      /* Tablet */
+      @media (max-width: 1024px) {
+        .header-name {
+          font-size: 3rem;
+          top: 15%;
+        }
+
+        .youtube-container iframe {
+          width: 260px;
+          height: 146px;
+        }
+      }
+
+      /* Mobile Large */
+      @media (max-width: 768px) {
+        .header-name {
+          font-size: 3rem;
+          top: 5%;
+          letter-spacing: 2px;
+        }
+
+        .container {
+          padding: 120px 15px 40px;
+        }
+
+        .profile-card {
+          padding: 25px 15px;
+          max-width: 90%;
+        }
+
+        .username {
+          font-size: 1.8rem;
+        }
+
+        .avatar {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 20px;
+        }
+
+        .entry-text {
+          font-size: 1rem;
+          margin-bottom: 25px;
+        }
+
+        .socials {
+          gap: 15px;
+          margin-top: 25px;
+        }
+
+        .social-icon {
+          width: 50px;
+          height: 50px;
+          font-size: 1.5rem;
+        }
+
+        .youtube-container {
+          bottom: 15px;
+          left: 15px;
+        }
+
+        .youtube-container iframe {
+          width: 220px !important;
+          height: 124px !important;
+        }
+      }
+
+      /* Mobile Small */
+      @media (max-width: 480px) {
+        .header-name {
+          font-size: 2.5rem;
+          top: 33%;
+          letter-spacing: 1px;
+        }
+
+        .container {
+          padding: 100px 10px 30px;
+        }
+
+        .profile-card {
+          padding: 20px 10px;
+          max-width: 95%;
+        }
+
+        .avatar {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 15px;
+        }
+
+        .entry-text {
+          font-size: 0.9rem;
+          margin-bottom: 20px;
+        }
+
+        .socials {
+          gap: 12px;
+          margin-top: 20px;
+        }
+
+        .social-icon {
+          width: 45px;
+          height: 45px;
+          font-size: 1.3rem;
+        }
+
+        .youtube-container {
+          bottom: 10px;
+          left: 10px;
+        }
+
+        .youtube-container iframe {
+          width: 180px !important;
+          height: 101px !important;
+        }
+      }
+
+      /* Mobile Extra Small */
+      @media (max-width: 360px) {
+        .header-name {
+          font-size: 2rem;
+          top: 2%;
+        }
+
+        .container {
+          padding: 80px 5px 20px;
+        }
+
+        .profile-card {
+          padding: 15px 8px;
+          max-width: 98%;
+        }
+
+        .avatar {
+          width: 70px;
+          height: 70px;
+        }
+
+        .entry-text {
+          font-size: 0.8rem;
+        }
+
+        .social-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 1.1rem;
+        }
+
+        .youtube-container iframe {
+          width: 160px !important;
+          height: 90px !important;
+        }
+      }
+
+      /* Landscape Mobile */
+      @media (max-height: 500px) and (orientation: landscape) {
+        .header-name {
+          font-size: 2.2rem;
+          top: 2%;
+        }
+
+        .container {
+          padding: 60px 20px 10px;
+        }
+
+        .profile-card {
+          padding: 15px 20px;
+        }
+
+        .avatar {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 10px;
+        }
+
+        .entry-text {
+          font-size: 0.9rem;
+          margin-bottom: 15px;
+        }
+
+        .youtube-container {
+          bottom: 5px;
+          left: 5px;
+        }
+
+        .youtube-container iframe {
+          width: 150px !important;
+          height: 84px !important;
         }
       }
     </style>
   </head>
   <body>
-    <div class="header-name">Nguyễn Thị Huyền Chi</div>
-    <div class="content">click to enter...</div>
+    <!-- Background Video -->
+    <video class="background-video" autoplay loop muted playsinline>
+      <source
+        src="https://r2.guns.lol/c791a659-e879-4688-a889-9b01eaf784db.mp4"
+        type="video/mp4"
+      />
+    </video>
+
+    <!-- Header Name -->
+    <div class="header-name">Huyền Chi</div>
+
+    <!-- Main Container -->
+    <div class="container">
+      <div class="profile-card">
+        <!-- Avatar -->
+        <div class="avatar">
+          <img
+            src="hcy2.jpeg"
+            alt="Avatar"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='👤'"
+          />
+        </div>
+
+        <!-- Username -->
+        <!-- <h1 class="username">Huyền Chi</h1> -->
+
+        <!-- Entry Text -->
+        <p class="entry-text">✨ Xin chào, đây là trang cá nhân của tôi ✨</p>
+
+        <!-- Social Icons -->
+        <div class="socials">
+          <a
+            href="https://www.facebook.com/hyen.chi.2112"
+            target="_blank"
+            class="social-icon"
+            title="Facebook"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="2 2 20 19.95"
+              fill="currentColor"
+            >
+              <path
+                d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://www.tiktok.com/@1234cycy12"
+            target="_blank"
+            class="social-icon"
+            title="TikTok"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="3.2 2 17.43 19.99"
+              fill="currentColor"
+            >
+              <path
+                d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74a2.89 2.89 0 0 1 2.31-4.64a2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Music Player -->
+    <div class="youtube-container">
+      <iframe
+        src="https://www.youtube.com/embed/MoYaUjvIxyE?si=cFaDu5fxMr5hISDF&autoplay=1&loop=1&playlist=MoYaUjvIxyE"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      >
+      </iframe>
+    </div>
+
     <script>
-      // Tạo bông tuyết không giới hạn
-      function createSnowflake() {
-        const flake = document.createElement("div");
-        flake.classList.add("snowflake");
-        flake.textContent = "❄";
-        flake.style.left = Math.random() * 100 + "vw";
-        flake.style.animationDuration = 3 + Math.random() * 4 + "s";
-        flake.style.fontSize = 0.5 + Math.random() * 1.5 + "em";
-        document.body.appendChild(flake);
+      // Shooting Stars Animation - Unlimited
+      function createShootingStar() {
+        const star = document.createElement("div");
+        star.classList.add("shooting-star");
 
-        // Xóa bông tuyết sau khi rơi xong để tránh tràn bộ nhớ
+        // Random starting position
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
+
+        // Random size (4-7px)
+        const size = 4 + Math.random() * 3;
+        star.style.width = size + "px";
+        star.style.height = size + "px";
+
+        // Fixed animation duration (2 seconds - slower)
+        star.style.animationDuration = "2s";
+
+        // Random opacity
+        star.style.opacity = 0.7 + Math.random() * 0.3;
+
+        document.body.appendChild(star);
+
+        // Remove star after 2 seconds
         setTimeout(() => {
-          flake.remove();
-        }, (3 + Math.random() * 4) * 1000);
+          star.remove();
+        }, 2000);
       }
 
-      // Tạo bông tuyết ban đầu
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => createSnowflake(), i * 200);
+      // Create initial shooting stars
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => createShootingStar(), i * 2000);
       }
 
-      // Tạo bông tuyết mới liên tục
-      setInterval(createSnowflake, 300);
+      // Continuously create shooting stars every 2 seconds
+      setInterval(createShootingStar, 2000);
+
+      // Cursor custom
+      document.body.style.cursor =
+        "url(https://r2.guns.lol/d65efee2-e2af-42e5-b2f4-63ecf4fb1afd.png) 16 16, auto";
     </script>
   </body>
 </html>
