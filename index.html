@@ -222,11 +222,10 @@
         color: #4facfe;
         text-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
         transform-origin: 50% 50%;
-        animation: magicalCharGlow 3s ease-in-out infinite,
-          magicalCharRotate 7s linear infinite;
+        animation: magicalCharGlow 3s ease-in-out infinite;
         white-space: nowrap;
         filter: blur(0px);
-        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.1s linear;
         cursor: pointer;
       }
 
@@ -326,19 +325,19 @@
 
       @keyframes magicalCharRotate {
         0% {
-          transform: rotate(0deg) rotateX(0deg) rotateY(0deg);
+          transform: rotate(0deg) rotateY(0deg);
         }
         25% {
-          transform: rotate(90deg) rotateX(15deg) rotateY(15deg);
+          transform: rotate(90deg) rotateY(5deg);
         }
         50% {
-          transform: rotate(180deg) rotateX(-10deg) rotateY(-10deg);
+          transform: rotate(180deg) rotateY(0deg);
         }
         75% {
-          transform: rotate(270deg) rotateX(20deg) rotateY(-15deg);
+          transform: rotate(270deg) rotateY(-5deg);
         }
         100% {
-          transform: rotate(360deg) rotateX(0deg) rotateY(0deg);
+          transform: rotate(360deg) rotateY(0deg);
         }
       }
 
@@ -599,8 +598,7 @@
       /* Hover effect for individual characters */
       .username .char:hover {
         transform: scale(1.2) rotate(5deg);
-        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-        color: #4facfe;
+        filter: brightness(1.3);
       }
 
       /* Entry Text */
@@ -1343,9 +1341,9 @@
     <!-- Circular Text Animation -->
     <div class="circular-text-container">
       <div class="circular-text" id="circularText">
-        <span class="circular-word">MN</span>
+        <span class="circular-word">Chy Gà</span>
         <span class="circular-word">-</span>
-        <span class="circular-word">HC</span>
+        <span class="circular-word">18 Tuổi</span>
       </div>
       <!-- Magic Sparkles -->
       <div class="magic-sparkles" id="magicSparkles"></div>
@@ -1365,18 +1363,15 @@
 
         <!-- Username -->
         <h1 class="username">
+          <span class="char" data-char="H">H</span>
+          <span class="char" data-char="U">U</span>
+          <span class="char" data-char="Y">Y</span>
+          <span class="char" data-char="Ề">Ề</span>
+          <span class="char" data-char="N">N</span>
+          <span class="char" data-char=" "> </span>
+          <span class="char" data-char=" "> </span>
           <span class="char" data-char="C">C</span>
           <span class="char" data-char="H">H</span>
-          <span class="char" data-char="Y">Y</span>
-          <span class="char" data-char=" "> </span>
-          <span class="char" data-char="G">G</span>
-          <span class="char" data-char="À">À</span>
-          <span class="char" data-char=" "> </span>
-          <span class="char" data-char="1">1</span>
-          <span class="char" data-char="1">8</span>
-          <span class="char" data-char=" "> </span>
-          <span class="char" data-char="T">T</span>
-          <span class="char" data-char="Ủ">Ủ</span>
           <span class="char" data-char="I">I</span>
         </h1>
 
@@ -2194,7 +2189,7 @@
 
           function setRandomTarget(word) {
             const text = word.textContent;
-            if (text === "MN" || text === "HC") {
+            if (text === "Chy Gà" || text === "18 Tuổi") {
               const pos = getRandomPositionOutsideProfileCard();
               wordTargets.set(word, { x: pos.x, y: pos.y });
             }
@@ -2204,8 +2199,8 @@
             words.forEach((word) => {
               const text = word.textContent;
 
-              // Only apply continuous movement to MN and HC
-              if (text === "MN" || text === "HC") {
+              // Only apply continuous movement to Chy Gà and 18 Tuổi
+              if (text === "Chy Gà" || text === "18 Tuổi") {
                 const currentX = parseInt(word.style.left) || 0;
                 const currentY = parseInt(word.style.top) || 0;
 
@@ -2252,13 +2247,12 @@
                   return;
                 }
 
-                // Gentle rotation
+                // Gentle rotation - smooth and slow
                 const currentRotate =
                   parseInt(
                     word.style.transform.match(/rotate\((-?\d+)deg\)/) || [0, 0]
                   )[1] || 0;
-                const newRotate =
-                  (currentRotate + (Math.random() - 0.5) * 2) % 360;
+                const newRotate = (currentRotate + 0.3) % 360; // Very slow rotation: 0.3 degrees per frame
                 word.style.transform = `rotate(${newRotate}deg)`;
               } else {
                 // For other words (-), use interval-based movement
@@ -2350,14 +2344,68 @@
             "charSlideFromBottom",
           ];
 
+          // Array of beautiful gradients
+          const gradients = [
+            { colors: ["#FF6B9D", "#FEC163"], name: "Pink-Orange" },
+            { colors: ["#4FACFE", "#00F2FE"], name: "Blue-Cyan" },
+            { colors: ["#C780E8", "#FF6B9D"], name: "Purple-Pink" },
+            { colors: ["#FFD93D", "#FF6B6B"], name: "Yellow-Red" },
+            { colors: ["#A8E6CF", "#6BCF7F"], name: "Mint-Green" },
+            { colors: ["#FF8B94", "#FEC163"], name: "Coral-Orange" },
+            { colors: ["#A8DADC", "#4FACFE"], name: "Sky-Blue" },
+            { colors: ["#F4A261", "#FFD93D"], name: "Peach-Yellow" },
+            { colors: ["#00F2FE", "#A8E6CF"], name: "Cyan-Mint" },
+            { colors: ["#FF6B6B", "#C780E8"], name: "Red-Purple" },
+            { colors: ["#6BCF7F", "#00F2FE"], name: "Green-Cyan" },
+            { colors: ["#FEC163", "#FF6B9D"], name: "Orange-Pink" },
+          ];
+
+          // Helper function to interpolate between two hex colors
+          function interpolateColor(color1, color2, ratio) {
+            const hex = (color) => {
+              const c = color.replace("#", "");
+              return {
+                r: parseInt(c.substr(0, 2), 16),
+                g: parseInt(c.substr(2, 2), 16),
+                b: parseInt(c.substr(4, 2), 16),
+              };
+            };
+
+            const c1 = hex(color1);
+            const c2 = hex(color2);
+
+            const r = Math.round(c1.r + (c2.r - c1.r) * ratio);
+            const g = Math.round(c1.g + (c2.g - c1.g) * ratio);
+            const b = Math.round(c1.b + (c2.b - c1.b) * ratio);
+
+            return `#${r.toString(16).padStart(2, "0")}${g
+              .toString(16)
+              .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+          }
+
           function resetAnimation() {
             // Choose random direction for this cycle
             const randomDirection =
               directions[Math.floor(Math.random() * directions.length)];
 
+            // Choose random gradient for this cycle
+            const randomGradient =
+              gradients[Math.floor(Math.random() * gradients.length)];
+            const gradientStart = randomGradient.colors[0];
+            const gradientEnd = randomGradient.colors[1];
+
             chars.forEach((char, index) => {
               char.style.animation = "none";
               char.style.opacity = "0";
+
+              // Calculate gradient color for this character
+              const totalChars = chars.length;
+              const ratio = index / (totalChars - 1);
+
+              // Interpolate between gradient start and end colors
+              const color = interpolateColor(gradientStart, gradientEnd, ratio);
+              char.style.color = color;
+              char.style.textShadow = `0 0 20px ${color}80, 0 0 40px ${color}40, 0 0 60px ${color}20`;
 
               // Set initial position based on direction
               switch (randomDirection) {
@@ -2400,15 +2448,17 @@
           // Add hover effect for container
           username.addEventListener("mouseenter", () => {
             chars.forEach((char) => {
+              const currentColor = char.style.color || "#fff";
               char.style.transform = "translateX(0) scale(1.1)";
-              char.style.textShadow = "0 0 40px rgba(79, 172, 254, 0.8)";
+              char.style.textShadow = `0 0 40px ${currentColor}, 0 0 60px ${currentColor}80`;
             });
           });
 
           username.addEventListener("mouseleave", () => {
             chars.forEach((char) => {
+              const currentColor = char.style.color || "#fff";
               char.style.transform = "translateX(0) scale(1)";
-              char.style.textShadow = "0 0 20px rgba(255, 255, 255, 0.5)";
+              char.style.textShadow = `0 0 20px ${currentColor}80, 0 0 40px ${currentColor}40`;
             });
           });
         }
