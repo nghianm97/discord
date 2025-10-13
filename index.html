@@ -41,153 +41,352 @@
         user-select: none;
       }
 
-      /* Background Video */
-      .background-video {
+      /* Background Image */
+      .background-image {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        background: linear-gradient(
+          135deg,
+          #0a0a0a 0%,
+          #1a1a2e 50%,
+          #16213e 100%
+        );
         z-index: 0;
+        overflow: hidden;
       }
 
-      /* Header Name - Running Text */
-      .header-name {
-        position: fixed;
-        top: 25%;
+      .background-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
         left: 0;
         width: 100%;
-        font-size: 4rem;
-        font-weight: 700;
-        background: linear-gradient(
-          45deg,
-          #ff6ec4,
-          #7873f5,
-          #4facfe,
-          #00f2fe,
-          #ff6ec4,
-          #ff9a56,
-          #ff6ec4
-        );
-        background-size: 400% 400%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: gradientFlow 6s ease-in-out infinite,
-          runningText 8s linear infinite;
-        z-index: 100;
-        text-align: center;
-        text-shadow: 0 0 40px rgba(255, 110, 196, 0.6);
-        letter-spacing: 3px;
-        filter: drop-shadow(0 0 20px rgba(120, 115, 245, 0.8));
-        transition: all 0.3s ease;
-        white-space: nowrap;
+        height: 100%;
+        background-image: radial-gradient(
+            circle at 20% 80%,
+            rgba(79, 172, 254, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 110, 196, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(120, 115, 245, 0.2) 0%,
+            transparent 50%
+          );
+        animation: backgroundPulse 8s ease-in-out infinite;
       }
 
-      .header-name:hover {
-        animation-play-state: paused;
-        text-shadow: 0 0 60px rgba(255, 255, 255, 0.9);
-        filter: drop-shadow(0 0 30px rgba(255, 110, 196, 1));
-      }
-
-      @keyframes gradientFlow {
-        0% {
-          background-position: 0% 50%;
-          filter: hue-rotate(0deg);
-        }
-        25% {
-          background-position: 100% 50%;
-          filter: hue-rotate(90deg);
-        }
-        50% {
-          background-position: 100% 100%;
-          filter: hue-rotate(180deg);
-        }
-        75% {
-          background-position: 0% 100%;
-          filter: hue-rotate(270deg);
-        }
-        100% {
-          background-position: 0% 50%;
-          filter: hue-rotate(360deg);
-        }
-      }
-
-      /* Poem Animation */
-      .poem-line {
-        position: fixed;
-        font-size: clamp(8px, 1.2vw, 15px);
-        font-weight: 900;
-        font-style: italic;
-        background: linear-gradient(
-          45deg,
-          #ff6ec4,
-          #7873f5,
-          #4facfe,
-          #00f2fe,
-          #ff9a9e
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: 0 0 60px rgba(255, 110, 196, 0.8);
-        letter-spacing: clamp(0.5px, 0.2vw, 1px);
-        opacity: 0;
-        transform: scale(0.3) rotate(-20deg);
-        transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        pointer-events: none;
-        z-index: 10001;
-        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
-        text-align: center;
-        white-space: nowrap;
-        max-width: 90vw;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .poem-line.show {
-        opacity: 1;
-        transform: scale(1.3) rotate(var(--random-rotation, 8deg));
-        animation: poemGlow 2s ease-in-out infinite alternate,
-          poemFloat 3s ease-in-out infinite;
-      }
-
-      .poem-line.hide {
-        opacity: 0;
-        transform: scale(0.2) rotate(-25deg);
-      }
-
-      @keyframes poemGlow {
-        0% {
-          text-shadow: 0 0 60px rgba(255, 110, 196, 0.8),
-            0 0 80px rgba(120, 115, 245, 0.6), 0 0 100px rgba(79, 172, 254, 0.4);
-        }
-        100% {
-          text-shadow: 0 0 80px rgba(255, 110, 196, 1),
-            0 0 100px rgba(120, 115, 245, 0.8),
-            0 0 120px rgba(79, 172, 254, 0.6);
-        }
-      }
-
-      @keyframes poemFloat {
+      @keyframes backgroundPulse {
         0%,
         100% {
-          transform: scale(1.3) rotate(var(--random-rotation, 8deg))
-            translateY(0px);
+          opacity: 0.5;
         }
         50% {
-          transform: scale(1.4)
-            rotate(calc(var(--random-rotation, 8deg) + 4deg)) translateY(-10px);
+          opacity: 1;
         }
       }
 
-      @keyframes runningText {
+      /* Animated Tech Characters */
+      .tech-characters {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .tech-char {
+        position: absolute;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        font-weight: bold;
+        color: #4facfe;
+        text-shadow: 0 0 10px rgba(79, 172, 254, 0.8);
+        opacity: 0;
+        animation: charFadeInOut 3s ease-in-out infinite;
+      }
+
+      .tech-char:nth-child(odd) {
+        color: #00f2fe;
+        text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+        animation-delay: 1.5s;
+      }
+
+      .tech-char:nth-child(3n) {
+        color: #ff6ec4;
+        text-shadow: 0 0 10px rgba(255, 110, 196, 0.8);
+        animation-delay: 3s;
+      }
+
+      @keyframes charFadeInOut {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(20px) scale(0.8);
+        }
+        20%,
+        80% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Animated Tech Lines */
+      .tech-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .tech-line {
+        position: absolute;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          #4facfe,
+          transparent
+        );
+        width: 2px;
+        height: 100px;
+        opacity: 0;
+        animation: lineGlow 4s ease-in-out infinite;
+      }
+
+      .tech-line:nth-child(odd) {
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          #00f2fe,
+          transparent
+        );
+        animation-delay: 2s;
+      }
+
+      .tech-line:nth-child(3n) {
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          #ff6ec4,
+          transparent
+        );
+        animation-delay: 4s;
+      }
+
+      @keyframes lineGlow {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(100px) scaleY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(0) scaleY(1);
+        }
+      }
+
+      /* Circular Text Animation */
+      .circular-text-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 50;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .circular-text {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .circular-word {
+        position: absolute;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #4facfe;
+        text-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
+        transform-origin: 50% 50%;
+        animation: magicalCharGlow 3s ease-in-out infinite,
+          magicalCharRotate 7s linear infinite;
+        white-space: nowrap;
+        filter: blur(0px);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        cursor: pointer;
+      }
+
+      .circular-word:nth-child(1) {
+        color: #4facfe;
+        text-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
+        animation-delay: 0s, 0s, 0s;
+      }
+
+      .circular-word:nth-child(2) {
+        color: #00f2fe;
+        text-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
+        animation-delay: 1s, 1s, 1.5s;
+      }
+
+      .circular-word:nth-child(3) {
+        color: #ff6ec4;
+        text-shadow: 0 0 20px rgba(255, 110, 196, 0.8);
+        animation-delay: 2s, 2s, 3s;
+      }
+
+      .circular-word:nth-child(4) {
+        color: #7873f5;
+        text-shadow: 0 0 20px rgba(120, 115, 245, 0.8);
+        animation-delay: 3s, 3s, 4.5s;
+      }
+
+      /* Magical Container Animations */
+      @keyframes magicalFloat {
+        0%,
+        100% {
+          transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+        }
+        25% {
+          transform: translateY(-20px) rotateX(5deg) rotateY(5deg);
+        }
+        50% {
+          transform: translateY(-10px) rotateX(-3deg) rotateY(-3deg);
+        }
+        75% {
+          transform: translateY(-30px) rotateX(8deg) rotateY(-5deg);
+        }
+      }
+
+      @keyframes magicalPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          filter: hue-rotate(0deg);
+        }
+        50% {
+          transform: scale(1.05);
+          filter: hue-rotate(180deg);
+        }
+      }
+
+      @keyframes magicalGlow {
+        0%,
+        100% {
+          filter: brightness(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+        }
+        50% {
+          filter: brightness(1.3) drop-shadow(0 0 40px rgba(255, 255, 255, 0.8));
+        }
+      }
+
+      /* Magical Character Animations */
+      @keyframes magicalCharFloat {
+        0%,
+        100% {
+          transform: translateY(0px) translateX(0px) scale(1);
+        }
+        25% {
+          transform: translateY(-15px) translateX(10px) scale(1.1);
+        }
+        50% {
+          transform: translateY(-5px) translateX(-5px) scale(0.9);
+        }
+        75% {
+          transform: translateY(-25px) translateX(-10px) scale(1.05);
+        }
+      }
+
+      @keyframes magicalCharGlow {
+        0%,
+        100% {
+          text-shadow: 0 0 20px currentColor, 0 0 40px currentColor,
+            0 0 60px rgba(255, 255, 255, 0.5);
+          filter: blur(0px);
+        }
+        50% {
+          text-shadow: 0 0 30px currentColor, 0 0 60px currentColor,
+            0 0 90px currentColor, 0 0 120px rgba(255, 255, 255, 0.8);
+          filter: blur(1px);
+        }
+      }
+
+      @keyframes magicalCharRotate {
         0% {
-          transform: translateX(-100%);
+          transform: rotate(0deg) rotateX(0deg) rotateY(0deg);
+        }
+        25% {
+          transform: rotate(90deg) rotateX(15deg) rotateY(15deg);
+        }
+        50% {
+          transform: rotate(180deg) rotateX(-10deg) rotateY(-10deg);
+        }
+        75% {
+          transform: rotate(270deg) rotateX(20deg) rotateY(-15deg);
         }
         100% {
-          transform: translateX(100%);
+          transform: rotate(360deg) rotateX(0deg) rotateY(0deg);
+        }
+      }
+
+      /* Magic Sparkles */
+      .magic-sparkles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 60;
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0;
+        animation: sparkleAnimation 3s ease-in-out infinite;
+      }
+
+      .sparkle:nth-child(odd) {
+        background: #4facfe;
+        animation-delay: 0.5s;
+      }
+
+      .sparkle:nth-child(3n) {
+        background: #ff6ec4;
+        animation-delay: 1s;
+      }
+
+      .sparkle:nth-child(4n) {
+        background: #00f2fe;
+        animation-delay: 1.5s;
+      }
+
+      @keyframes sparkleAnimation {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.5) rotate(180deg);
         }
       }
 
@@ -229,8 +428,8 @@
 
       /* Avatar */
       .avatar {
-        width: 150px;
-        height: 150px;
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
         margin: 0 auto 25px;
         border: 4px solid rgba(255, 255, 255, 0.3);
@@ -263,19 +462,152 @@
 
       /* Username */
       .username {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
         font-weight: 700;
         text-align: center;
         margin-bottom: 15px;
         color: #fff;
         text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .username .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateX(-100px);
+        transition: all 0.3s ease;
+      }
+
+      .username .char:nth-child(1) {
+        --char-index: 0;
+      }
+      .username .char:nth-child(2) {
+        --char-index: 1;
+      }
+      .username .char:nth-child(3) {
+        --char-index: 2;
+      }
+      .username .char:nth-child(4) {
+        --char-index: 3;
+      }
+      .username .char:nth-child(5) {
+        --char-index: 4;
+      }
+      .username .char:nth-child(6) {
+        --char-index: 5;
+      }
+      .username .char:nth-child(7) {
+        --char-index: 6;
+      }
+      .username .char:nth-child(8) {
+        --char-index: 7;
+      }
+      .username .char:nth-child(9) {
+        --char-index: 8;
+      }
+      .username .char:nth-child(10) {
+        --char-index: 9;
+      }
+      .username .char:nth-child(11) {
+        --char-index: 10;
+      }
+      .username .char:nth-child(12) {
+        --char-index: 11;
+      }
+      .username .char:nth-child(13) {
+        --char-index: 12;
+      }
+
+      /* 4 Direction Animations */
+      @keyframes charSlideFromLeft {
+        0% {
+          opacity: 0;
+          transform: translateX(-100px) scale(0.5);
+          filter: blur(10px);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateX(-20px) scale(0.8);
+          filter: blur(3px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes charSlideFromRight {
+        0% {
+          opacity: 0;
+          transform: translateX(100px) scale(0.5);
+          filter: blur(10px);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateX(20px) scale(0.8);
+          filter: blur(3px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes charSlideFromTop {
+        0% {
+          opacity: 0;
+          transform: translateY(-100px) scale(0.5);
+          filter: blur(10px);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateY(-20px) scale(0.8);
+          filter: blur(3px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes charSlideFromBottom {
+        0% {
+          opacity: 0;
+          transform: translateY(100px) scale(0.5);
+          filter: blur(10px);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateY(20px) scale(0.8);
+          filter: blur(3px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      /* Hover effect for individual characters */
+      .username .char:hover {
+        transform: scale(1.2) rotate(5deg);
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        color: #4facfe;
       }
 
       /* Entry Text */
       .entry-text {
         text-align: center;
         font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: white;
         margin-bottom: 30px;
         animation: blink 2s ease-in-out infinite;
       }
@@ -715,15 +1047,12 @@
 
       /* Responsive rules omitted for brevity (kept same as original) */
       @media (max-width: 1024px) {
-        .header-name {
+        .username {
           font-size: 3rem;
-          top: 15%;
-          animation: gradientFlow 6s ease-in-out infinite,
-            runningText 10s linear infinite;
         }
 
-        .poem-line {
-          font-size: clamp(8px, 1.1vw, 14px);
+        .circular-word {
+          font-size: 2.2rem;
         }
 
         .wave-container {
@@ -755,10 +1084,12 @@
       }
 
       @media (max-width: 768px) {
-        .header-name {
-          font-size: 3rem;
-          top: 5%;
-          letter-spacing: 2px;
+        .username {
+          font-size: 2.5rem;
+        }
+
+        .circular-word {
+          font-size: 2rem;
         }
 
         .container {
@@ -827,14 +1158,12 @@
       }
 
       @media (max-width: 480px) {
-        .header-name {
-          font-size: 2.5rem;
-          top: 30%;
-          letter-spacing: 1px;
+        .username {
+          font-size: 2rem;
         }
 
-        .poem-line {
-          font-size: clamp(8px, 1vw, 12px);
+        .circular-word {
+          font-size: 1.8rem;
         }
 
         .container {
@@ -847,8 +1176,8 @@
         }
 
         .avatar {
-          width: 80px;
-          height: 80px;
+          width: 150px;
+          height: 150px;
           margin-bottom: 15px;
         }
 
@@ -899,15 +1228,6 @@
       }
 
       @media (max-width: 360px) {
-        .header-name {
-          font-size: 2rem;
-          top: 2%;
-        }
-
-        .poem-line {
-          font-size: clamp(8px, 0.9vw, 10px);
-        }
-
         .container {
           padding: 50px 5px 10px;
         }
@@ -963,15 +1283,6 @@
       }
 
       @media (max-height: 500px) and (orientation: landscape) {
-        .header-name {
-          font-size: 2.2rem;
-          top: 2%;
-        }
-
-        .poem-line {
-          font-size: clamp(8px, 1vw, 13px);
-        }
-
         .container {
           padding: 40px 20px 5px;
         }
@@ -1021,29 +1332,23 @@
     </style>
   </head>
   <body>
-    <!-- Background Video -->
-    <video
-      id="bgVideo"
-      class="background-video"
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="auto"
-      aria-hidden="true"
-    >
-      <source
-        src="https://r2.guns.lol/c791a659-e879-4688-a889-9b01eaf784db.mp4"
-        type="video/mp4"
-      />
-    </video>
+    <!-- Background Image -->
+    <div class="background-image">
+      <!-- Animated Tech Characters -->
+      <div class="tech-characters" id="techCharacters"></div>
+      <!-- Animated Tech Lines -->
+      <div class="tech-lines" id="techLines"></div>
+    </div>
 
-    <!-- Header Name -->
-    <div class="header-name">
-      <p class="poem-line" data-line="0">Một mảnh kí ức</p>
-      <p class="poem-line" data-line="1">Em chia ra làm 2 phần</p>
-      <p class="poem-line" data-line="2">Phần đầu là phần gặp gỡ</p>
-      <p class="poem-line" data-line="3">Phần còn lại khắc cốt ghi tâm...</p>
+    <!-- Circular Text Animation -->
+    <div class="circular-text-container">
+      <div class="circular-text" id="circularText">
+        <span class="circular-word">MN</span>
+        <span class="circular-word">-</span>
+        <span class="circular-word">HC</span>
+      </div>
+      <!-- Magic Sparkles -->
+      <div class="magic-sparkles" id="magicSparkles"></div>
     </div>
 
     <!-- Main Container -->
@@ -1059,7 +1364,21 @@
         </div>
 
         <!-- Username -->
-        <h1 class="username">Huyền Chi</h1>
+        <h1 class="username">
+          <span class="char" data-char="C">C</span>
+          <span class="char" data-char="H">H</span>
+          <span class="char" data-char="Y">Y</span>
+          <span class="char" data-char=" "> </span>
+          <span class="char" data-char="G">G</span>
+          <span class="char" data-char="À">À</span>
+          <span class="char" data-char=" "> </span>
+          <span class="char" data-char="1">1</span>
+          <span class="char" data-char="1">8</span>
+          <span class="char" data-char=" "> </span>
+          <span class="char" data-char="T">T</span>
+          <span class="char" data-char="Ủ">Ủ</span>
+          <span class="char" data-char="I">I</span>
+        </h1>
 
         <!-- Entry Text -->
         <p class="entry-text">✨ Xin chào, đây là trang cá nhân của tôi ✨</p>
@@ -1144,7 +1463,6 @@
     <script>
       (function () {
         // Elements
-        const bgVideo = document.getElementById("bgVideo");
         const manhkiuc = document.getElementById("manhkiuc");
         const overlay = document.getElementById("playOverlay");
         const btnPlayUnmute = document.getElementById("playUnmuteBtn");
@@ -1176,110 +1494,6 @@
           waveCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
           waveCanvas.style.width = rect.width + "px";
           waveCanvas.style.height = rect.height + "px";
-        }
-
-        // Poem Animation
-        let currentPoemLine = 0;
-        let poemAnimationInterval = null;
-
-        function startPoemAnimation() {
-          console.log("📝 Starting poem animation...");
-
-          const poemLines = document.querySelectorAll(".poem-line");
-          if (poemLines.length === 0) return;
-
-          currentPoemLine = 0;
-          showPoemLine(currentPoemLine);
-        }
-
-        function showPoemLine(lineIndex) {
-          const poemLines = document.querySelectorAll(".poem-line");
-          if (lineIndex >= poemLines.length) {
-            // Animation finished, restart
-            setTimeout(() => {
-              startPoemAnimation();
-            }, 1000);
-            return;
-          }
-
-          const currentLine = poemLines[lineIndex];
-
-          // Calculate available space (90% of viewport to ensure text fits)
-          const availableWidth = window.innerWidth * 0.9;
-          const availableHeight = window.innerHeight * 0.9;
-
-          // Get text width to ensure it fits
-          const tempSpan = document.createElement("span");
-          tempSpan.style.fontSize =
-            currentLine.style.fontSize ||
-            getComputedStyle(currentLine).fontSize;
-          tempSpan.style.fontFamily = getComputedStyle(currentLine).fontFamily;
-          tempSpan.style.fontWeight = getComputedStyle(currentLine).fontWeight;
-          tempSpan.style.visibility = "hidden";
-          tempSpan.style.position = "absolute";
-          tempSpan.textContent = currentLine.textContent;
-          document.body.appendChild(tempSpan);
-
-          const textWidth = tempSpan.offsetWidth;
-          const textHeight = tempSpan.offsetHeight;
-          document.body.removeChild(tempSpan);
-
-          // Random position ensuring text fits within viewport
-          const maxX = Math.max(0, availableWidth - textWidth);
-          const maxY = Math.max(0, availableHeight - textHeight);
-
-          const randomX = Math.random() * maxX;
-          const randomY = Math.random() * maxY;
-
-          // Set position using percentage for better responsiveness
-          currentLine.style.left = (randomX / window.innerWidth) * 100 + "%";
-          currentLine.style.top = (randomY / window.innerHeight) * 100 + "%";
-
-          // Random rotation for variety (horizontal, vertical, diagonal)
-          const rotationAngles = [
-            0, 90, -90, 180, 45, -45, 135, -135, 30, -30, 60, -60,
-          ];
-          const randomRotation =
-            rotationAngles[Math.floor(Math.random() * rotationAngles.length)];
-
-          // Apply random rotation to the element
-          currentLine.style.setProperty(
-            "--random-rotation",
-            randomRotation + "deg"
-          );
-
-          // Show line
-          currentLine.classList.remove("hide");
-          currentLine.classList.add("show");
-
-          console.log(
-            `📝 Showing line ${lineIndex + 1}: "${
-              currentLine.textContent
-            }" at ${currentLine.style.left}, ${
-              currentLine.style.top
-            } rotated ${randomRotation}°`
-          );
-
-          // Hide after 2 seconds
-          setTimeout(() => {
-            currentLine.classList.remove("show");
-            currentLine.classList.add("hide");
-
-            // Show next line after hide animation
-            setTimeout(() => {
-              currentPoemLine++;
-              showPoemLine(currentPoemLine);
-            }, 1000);
-          }, 2000);
-        }
-
-        function stopPoemAnimation() {
-          const poemLines = document.querySelectorAll(".poem-line");
-          poemLines.forEach((line) => {
-            line.classList.remove("show");
-            line.classList.add("hide");
-          });
-          currentPoemLine = 0;
         }
 
         // Initialize Web Audio API
@@ -1784,7 +1998,7 @@
 
         // Config
         const retryDelays = [100, 300, 700, 1500, 3000, 5000];
-        let autoplaySucceeded = { bg: false, music: false };
+        let autoplaySucceeded = { music: false };
 
         // Utility: try to play a video with retries and AudioContext resume attempt
         async function tryAutoplay(video, idLabel = "video") {
@@ -1831,17 +2045,396 @@
           return false;
         }
 
+        // Tech Animation Functions
+        function createTechCharacters() {
+          const techChars = document.getElementById("techCharacters");
+          const characters =
+            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()";
+
+          for (let i = 0; i < 100; i++) {
+            const char = document.createElement("div");
+            char.className = "tech-char";
+            char.textContent =
+              characters[Math.floor(Math.random() * characters.length)];
+            char.style.left = Math.random() * 100 + "%";
+            char.style.top = Math.random() * 100 + "%";
+            char.style.animationDelay = Math.random() * 5 + "s";
+            char.style.animationDuration = 3 + Math.random() * 4 + "s";
+            techChars.appendChild(char);
+          }
+        }
+
+        function createTechLines() {
+          const techLines = document.getElementById("techLines");
+
+          for (let i = 0; i < 50; i++) {
+            const line = document.createElement("div");
+            line.className = "tech-line";
+            line.style.left = Math.random() * 100 + "%";
+            line.style.top = Math.random() * 100 + "%";
+            line.style.animationDelay = Math.random() * 6 + "s";
+            line.style.animationDuration = 4 + Math.random() * 3 + "s";
+            line.style.height = 50 + Math.random() * 150 + "px";
+            techLines.appendChild(line);
+          }
+        }
+
+        function updateTechAnimation() {
+          const chars = document.querySelectorAll(".tech-char");
+          const lines = document.querySelectorAll(".tech-line");
+
+          chars.forEach((char) => {
+            if (Math.random() < 0.1) {
+              const characters =
+                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()";
+              char.textContent =
+                characters[Math.floor(Math.random() * characters.length)];
+            }
+          });
+        }
+
+        // Magical Text Animation - Random Movement Across Viewport
+        function setupCircularText() {
+          const circularText = document.getElementById("circularText");
+          const words = circularText.querySelectorAll(".circular-word");
+
+          // Get profile card boundaries
+          function getProfileCardBounds() {
+            const profileCard = document.querySelector(".profile-card");
+            if (!profileCard) return null;
+
+            const rect = profileCard.getBoundingClientRect();
+            return {
+              left: rect.left - 50, // Add margin
+              right: rect.right + 50,
+              top: rect.top - 50,
+              bottom: rect.bottom + 50,
+            };
+          }
+
+          // Check if position is outside profile card
+          function isOutsideProfileCard(x, y, bounds) {
+            if (!bounds) return true;
+            return (
+              x < bounds.left ||
+              x > bounds.right ||
+              y < bounds.top ||
+              y > bounds.bottom
+            );
+          }
+
+          // Get random position outside profile card
+          function getRandomPositionOutsideProfileCard() {
+            const bounds = getProfileCardBounds();
+            let attempts = 0;
+            const maxAttempts = 100;
+
+            while (attempts < maxAttempts) {
+              const x = Math.random() * (window.innerWidth - 100);
+              const y = Math.random() * (window.innerHeight - 100);
+
+              if (isOutsideProfileCard(x, y, bounds)) {
+                return { x, y };
+              }
+              attempts++;
+            }
+
+            // Fallback: position at edges
+            const edges = [
+              { x: 50, y: Math.random() * (window.innerHeight - 100) }, // Left edge
+              {
+                x: window.innerWidth - 150,
+                y: Math.random() * (window.innerHeight - 100),
+              }, // Right edge
+              { x: Math.random() * (window.innerWidth - 100), y: 50 }, // Top edge
+              {
+                x: Math.random() * (window.innerWidth - 100),
+                y: window.innerHeight - 150,
+              }, // Bottom edge
+            ];
+            return edges[Math.floor(Math.random() * edges.length)];
+          }
+
+          // Thiết lập vị trí ban đầu ngẫu nhiên ngoài profile-card
+          words.forEach((word, index) => {
+            const pos = getRandomPositionOutsideProfileCard();
+            word.style.left = pos.x + "px";
+            word.style.top = pos.y + "px";
+
+            // Thêm hiệu ứng hover ảo diệu
+            word.addEventListener("mouseenter", () => {
+              word.style.filter = "brightness(1.5) blur(2px)";
+              word.style.transform = "scale(1.5) rotate(360deg)";
+              word.style.zIndex = "100";
+            });
+
+            word.addEventListener("mouseleave", () => {
+              word.style.filter = "";
+              word.style.transform = "";
+              word.style.zIndex = "";
+            });
+
+            // Click để di chuyển ngẫu nhiên ngoài profile-card
+            word.addEventListener("click", () => {
+              const pos = getRandomPositionOutsideProfileCard();
+              word.style.left = pos.x + "px";
+              word.style.top = pos.y + "px";
+
+              // Hiệu ứng click
+              word.style.transform = "scale(0.8) rotate(180deg)";
+              setTimeout(() => {
+                word.style.transform = "";
+              }, 300);
+            });
+          });
+
+          // Continuous movement for MN and HC
+          let animationId;
+          let wordTargets = new Map(); // Store target positions for each word
+
+          function setRandomTarget(word) {
+            const text = word.textContent;
+            if (text === "MN" || text === "HC") {
+              const pos = getRandomPositionOutsideProfileCard();
+              wordTargets.set(word, { x: pos.x, y: pos.y });
+            }
+          }
+
+          function continuousMovement() {
+            words.forEach((word) => {
+              const text = word.textContent;
+
+              // Only apply continuous movement to MN and HC
+              if (text === "MN" || text === "HC") {
+                const currentX = parseInt(word.style.left) || 0;
+                const currentY = parseInt(word.style.top) || 0;
+
+                // Get or set target position
+                if (!wordTargets.has(word)) {
+                  setRandomTarget(word);
+                }
+
+                const target = wordTargets.get(word);
+                const targetX = target.x;
+                const targetY = target.y;
+
+                // Calculate direction to target
+                const deltaX = targetX - currentX;
+                const deltaY = targetY - currentY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                // If reached target or very close, set new target
+                if (distance < 10) {
+                  setRandomTarget(word);
+                  return;
+                }
+
+                // Move towards target with smooth speed
+                const speed = 1.5; // Adjust speed here
+                const moveX = (deltaX / distance) * speed;
+                const moveY = (deltaY / distance) * speed;
+
+                let newX = currentX + moveX;
+                let newY = currentY + moveY;
+
+                // Keep within viewport bounds
+                newX = Math.max(0, Math.min(newX, window.innerWidth - 100));
+                newY = Math.max(0, Math.min(newY, window.innerHeight - 100));
+
+                // Check if new position is outside profile card
+                const bounds = getProfileCardBounds();
+                if (isOutsideProfileCard(newX, newY, bounds)) {
+                  word.style.left = newX + "px";
+                  word.style.top = newY + "px";
+                } else {
+                  // If would enter profile card, set new target away from profile card
+                  setRandomTarget(word);
+                  return;
+                }
+
+                // Gentle rotation
+                const currentRotate =
+                  parseInt(
+                    word.style.transform.match(/rotate\((-?\d+)deg\)/) || [0, 0]
+                  )[1] || 0;
+                const newRotate =
+                  (currentRotate + (Math.random() - 0.5) * 2) % 360;
+                word.style.transform = `rotate(${newRotate}deg)`;
+              } else {
+                // For other words (-), use interval-based movement
+                if (Math.random() < 0.3) {
+                  const currentX = parseInt(word.style.left) || 0;
+                  const currentY = parseInt(word.style.top) || 0;
+
+                  const moveX = (Math.random() - 0.5) * 100;
+                  const moveY = (Math.random() - 0.5) * 100;
+
+                  let newX = currentX + moveX;
+                  let newY = currentY + moveY;
+
+                  newX = Math.max(0, Math.min(newX, window.innerWidth - 100));
+                  newY = Math.max(0, Math.min(newY, window.innerHeight - 100));
+
+                  const bounds = getProfileCardBounds();
+                  if (isOutsideProfileCard(newX, newY, bounds)) {
+                    word.style.left = newX + "px";
+                    word.style.top = newY + "px";
+                  }
+                }
+              }
+            });
+
+            animationId = requestAnimationFrame(continuousMovement);
+          }
+
+          // Start continuous movement
+          continuousMovement();
+
+          // Stop continuous movement when page is hidden
+          document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+              cancelAnimationFrame(animationId);
+            } else {
+              continuousMovement();
+            }
+          });
+        }
+
+        // Magic Sparkles Animation
+        function createMagicSparkles() {
+          const sparklesContainer = document.getElementById("magicSparkles");
+
+          function addSparkle() {
+            const sparkle = document.createElement("div");
+            sparkle.className = "sparkle";
+
+            // Random position around the circular text
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 150 + Math.random() * 100;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            sparkle.style.left = `calc(50% + ${x}px)`;
+            sparkle.style.top = `calc(50% + ${y}px)`;
+            sparkle.style.animationDuration = 2 + Math.random() * 3 + "s";
+
+            sparklesContainer.appendChild(sparkle);
+
+            // Remove sparkle after animation
+            setTimeout(() => {
+              if (sparkle.parentNode) {
+                sparkle.parentNode.removeChild(sparkle);
+              }
+            }, 5000);
+          }
+
+          // Create sparkles periodically
+          setInterval(addSparkle, 300);
+
+          // Create initial sparkles
+          for (let i = 0; i < 10; i++) {
+            setTimeout(addSparkle, i * 200);
+          }
+        }
+
+        // Username Animation - Random Direction Effect
+        function setupUsernameAnimation() {
+          const username = document.querySelector(".username");
+          const chars = username.querySelectorAll(".char");
+
+          // Array of animation directions
+          const directions = [
+            "charSlideFromLeft",
+            "charSlideFromRight",
+            "charSlideFromTop",
+            "charSlideFromBottom",
+          ];
+
+          function resetAnimation() {
+            // Choose random direction for this cycle
+            const randomDirection =
+              directions[Math.floor(Math.random() * directions.length)];
+
+            chars.forEach((char, index) => {
+              char.style.animation = "none";
+              char.style.opacity = "0";
+
+              // Set initial position based on direction
+              switch (randomDirection) {
+                case "charSlideFromLeft":
+                  char.style.transform = "translateX(-100px) scale(0.5)";
+                  break;
+                case "charSlideFromRight":
+                  char.style.transform = "translateX(100px) scale(0.5)";
+                  break;
+                case "charSlideFromTop":
+                  char.style.transform = "translateY(-100px) scale(0.5)";
+                  break;
+                case "charSlideFromBottom":
+                  char.style.transform = "translateY(100px) scale(0.5)";
+                  break;
+              }
+
+              // Force reflow
+              char.offsetHeight;
+
+              // Restart animation with shorter delay
+              setTimeout(() => {
+                char.style.animation = `${randomDirection} 0.6s ease-out forwards`;
+                char.style.animationDelay = `${index * 0.08}s`; // Reduced from 0.2s to 0.08s
+              }, 50);
+            });
+          }
+
+          // Start initial animation
+          resetAnimation();
+
+          // Repeat animation every 5 seconds (reduced from 8s)
+          setInterval(resetAnimation, 5000);
+
+          // Add click to restart animation
+          username.addEventListener("click", () => {
+            resetAnimation();
+          });
+
+          // Add hover effect for container
+          username.addEventListener("mouseenter", () => {
+            chars.forEach((char) => {
+              char.style.transform = "translateX(0) scale(1.1)";
+              char.style.textShadow = "0 0 40px rgba(79, 172, 254, 0.8)";
+            });
+          });
+
+          username.addEventListener("mouseleave", () => {
+            chars.forEach((char) => {
+              char.style.transform = "translateX(0) scale(1)";
+              char.style.textShadow = "0 0 20px rgba(255, 255, 255, 0.5)";
+            });
+          });
+        }
+
         // Initialize everything on load
         window.addEventListener("load", async () => {
           // Initialize canvas
           initCanvas();
 
-          // Only play background video (muted)
-          if (bgVideo) {
-            autoplaySucceeded.bg = await tryAutoplay(bgVideo, "bgVideo");
-            // keep bgVideo muted if succeeded and visually it's background
-            bgVideo.muted = true;
-          }
+          // Create tech animations
+          createTechCharacters();
+          createTechLines();
+
+          // Setup circular text
+          setupCircularText();
+
+          // Create magic sparkles
+          createMagicSparkles();
+
+          // Setup username animation
+          setupUsernameAnimation();
+
+          // Update tech animation periodically
+          setInterval(updateTechAnimation, 2000);
+
+          // Background image is now static, no video needed
 
           // Don't auto-play music video - wait for user to click "Enter"
           if (manhkiuc) {
@@ -1908,10 +2501,27 @@
           // Handle window resize
           window.addEventListener("resize", initCanvas);
 
-          // Start poem animation after 2 seconds
-          setTimeout(() => {
-            startPoemAnimation();
-          }, 2000);
+          // Handle window resize for text positioning
+          window.addEventListener("resize", () => {
+            const words = document.querySelectorAll(".circular-word");
+            words.forEach((word) => {
+              const currentX = parseInt(word.style.left) || 0;
+              const currentY = parseInt(word.style.top) || 0;
+
+              // Adjust position if outside new viewport
+              let newX = Math.max(
+                0,
+                Math.min(currentX, window.innerWidth - 100)
+              );
+              let newY = Math.max(
+                0,
+                Math.min(currentY, window.innerHeight - 100)
+              );
+
+              word.style.left = newX + "px";
+              word.style.top = newY + "px";
+            });
+          });
         });
 
         // Fallback overlay behavior
@@ -1935,13 +2545,7 @@
               /* ignore */
             }
 
-            // Play both videos
-            if (bgVideo) {
-              try {
-                bgVideo.muted = true; // keep background muted
-                await bgVideo.play();
-              } catch (e) {}
-            }
+            // Play music video
             if (manhkiuc) {
               try {
                 manhkiuc.muted = false;
@@ -1964,12 +2568,6 @@
 
           // Play muted (no sound)
           btnPlayMuted.addEventListener("click", async () => {
-            if (bgVideo) {
-              try {
-                bgVideo.muted = true;
-                await bgVideo.play();
-              } catch (e) {}
-            }
             if (manhkiuc) {
               try {
                 manhkiuc.muted = true;
@@ -1981,10 +2579,6 @@
 
           // Also allow any first user gesture anywhere to trigger play (convenience)
           function onFirstGesture() {
-            if (bgVideo) {
-              bgVideo.muted = true;
-              bgVideo.play().catch(() => {});
-            }
             if (manhkiuc) {
               manhkiuc.muted = true;
               manhkiuc.play().catch(() => {});
