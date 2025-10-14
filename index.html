@@ -58,6 +58,21 @@
         overflow: hidden;
       }
 
+      /* Background Video */
+      .background-video {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        object-fit: cover;
+        opacity: 0.6;
+      }
+
       .background-image::before {
         content: "";
         position: absolute;
@@ -810,7 +825,7 @@
         display: block;
       }
 
-      /* Music Video Player - Visible */
+      /* Music Video Player - Hidden but playing audio */
       .music-video-container {
         position: fixed;
         bottom: 20px;
@@ -820,8 +835,8 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         width: 280px;
         height: 158px;
-        opacity: 1;
-        pointer-events: auto;
+        opacity: 0;
+        pointer-events: none;
         backdrop-filter: blur(10px);
       }
 
@@ -832,18 +847,7 @@
         border-radius: 8px;
       }
 
-      /* Hover effects for video container */
-      .music-video-container:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-        transition: all 0.3s ease;
-      }
-
-      .music-video-container:hover video {
-        filter: brightness(1.1);
-      }
-
-      /* Responsive design for video container */
+      /* Responsive design for video container - Hidden */
       @media (max-width: 768px) {
         .music-video-container {
           width: 200px;
@@ -851,6 +855,7 @@
           bottom: 20px;
           left: 50%;
           transform: translateX(-50%);
+          opacity: 0;
         }
       }
 
@@ -861,6 +866,7 @@
           bottom: 15px;
           left: 50%;
           transform: translateX(-50%);
+          opacity: 0;
         }
       }
 
@@ -1064,6 +1070,7 @@
           bottom: 20px;
           left: 50%;
           transform: translateX(-50%);
+          opacity: 0;
         }
 
         .video-control-btn {
@@ -1138,6 +1145,7 @@
           transform: translateX(-50%);
           width: 220px;
           height: 124px;
+          opacity: 0;
         }
 
         .video-control-btn {
@@ -1208,6 +1216,7 @@
           transform: translateX(-50%);
           width: 180px;
           height: 101px;
+          opacity: 0;
         }
 
         .video-control-btn {
@@ -1263,6 +1272,7 @@
           bottom: 10px;
           left: 50%;
           transform: translateX(-50%);
+          opacity: 0;
         }
 
         .video-control-btn {
@@ -1311,6 +1321,7 @@
           transform: translateX(-50%);
           width: 150px;
           height: 84px;
+          opacity: 0;
         }
 
         .video-control-btn {
@@ -1332,6 +1343,18 @@
   <body>
     <!-- Background Image -->
     <div class="background-image">
+      <!-- Background Video -->
+      <video
+        id="backgroundVideo"
+        class="background-video"
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="67358-521707474_small.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       <!-- Animated Tech Characters -->
       <div class="tech-characters" id="techCharacters"></div>
       <!-- Animated Tech Lines -->
@@ -1926,6 +1949,18 @@
           if (enterOverlay) {
             enterOverlay.classList.add("hidden");
             enterOverlay.style.display = "none";
+          }
+
+          // Start background video
+          const backgroundVideo = document.getElementById("backgroundVideo");
+          if (backgroundVideo) {
+            backgroundVideo.play()
+              .then(() => {
+                console.log("✅ Background video started playing");
+              })
+              .catch((error) => {
+                console.warn("⚠️ Background video autoplay failed:", error);
+              });
           }
 
           // Use the same logic as testAudio function
